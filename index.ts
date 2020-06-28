@@ -1,4 +1,3 @@
-export const test = function () {
-	const msg: string = "Hello World!";
-	console.log(msg);
-}
+import { Byakugan } from './src/byakugan';
+
+export default Byakugan;

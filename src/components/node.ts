@@ -77,4 +77,10 @@ export class Node {
 		
 		this.addDirection(directions);
     }
+
+    updateScore(g: number, h: number): void {
+        this.g = g;
+        this.h = h;
+        this.f = g + h;
+    }
 }
