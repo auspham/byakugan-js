@@ -4,15 +4,15 @@ import { Result } from "./components/result";
 
 export class Byakugan {
     private settings: Settings;
-    private grid: Array<Array<Node>>;
-    private starts: Array<Node>;
-    private ends: Array<Node>;
-    private results: Array<Result>;
+    private grid    : Array<Array<Node>>;
+    private starts  : Array<Node>;
+    private ends    : Array<Node>;
+    private results : Array<Result>;
 
     constructor(settings: Settings) {
         this.settings = settings;
-        this.starts = [];
-        this.ends = [];
+        this.starts   = [];
+        this.ends     = [];
         this.constructNode(settings.grid);
     }
 
@@ -20,6 +20,7 @@ export class Byakugan {
         for (let row: number = 0; row < grid.length; row++) {
             for (let col: number = 0; col < grid[0].length; col++) {
                 let val: number = grid[row][col];
+                // NOTE: this.grid still undefined;
                 this.grid[row][col] = new Node(
                     row,
                     col,
