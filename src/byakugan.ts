@@ -1,21 +1,104 @@
-import { Settings } from './components/settings';
+import { Settings } from "./components/settings";
+import { Node } from "./components/node";
 
 class Byakugan {
     private settings: Settings;
+    private grid    : Array<Array<Node>>;
+    private starts  : Array<Node>;
     private ends    : Array<Node>;
 
     constructor(settings: Settings) {
         this.settings = settings;
+        this.starts   = [];
         this.ends     = [];
         this.constructNode(settings.grid);
     }
 
     constructNode(grid: Array<Array<number>>): void {
-        for (let row = 0; row < grid.length; row++) {
-            for (let col = 0; col < grid[0].length; col++) {
-                let val = grid[row][col];
-                
+        for (let row: number = 0; row < grid.length; row++) {
+            for (let col: number = 0; col < grid[0].length; col++) {
+                let val: number = grid[row][col];
+                this.grid[row][col] = new Node(
+                    row,
+                    col,
+                    this.grid,
+                    this.settings.diagonal,
+                    val == this.settings.obstacle,
+                    val == this.settings.start,
+                    val == this.settings.goal,
+                    this.settings.callbacks
+                );
+
+                if(val == this.settings.start) {
+					this.starts.push(this.grid[row][col]);
+				}
+
+				if (val == this.settings.goal) {
+					this.ends.push(this.grid[row][col]);	
+				}
             }
         }
+
+
+
+        for (let row: number = 0; row < this.grid.length; row++) {
+			for (let col: number = 0; col < this.grid[0].length; col ++) {
+				this.grid[row][col].addNeighbours();
+			}
+        }
+        
+        this.search();
     }
+
+    distance(a: Node, b: Node): number {
+        return Math.hypot(a.row - b.row, a.col - b.col);
+    }
+
+    search(): Array<Node> {
+        let openSet: Array<Node> = [this.starts.pop()];
+        let closeSet: Array<Node> = [];
+
+        while (openSet.length > 0) {
+
+            let current = null;
+
+			for (let i = 0; i < openSet.length; i++) {
+				if (!current.f || openSet[i].f < current.f) {
+					current = openSet[i];
+				}
+			}
+
+			if (current.goal) {
+				// Done
+				return current;
+			}
+
+			const _remove = openSet.indexOf(current);
+			let [remove] = openSet.splice(_remove, 1);
+			closeSet.push(remove);
+
+			for (let i = 0; i < current.neighbours.length; i++) {
+				let neighbour = current.neighbours[i];
+				let tempG = current.g + this.distance(current, neighbour);
+
+				if (neighbour.obstacle || closeSet.includes(neighbour))
+					continue
+				if(tempG > neighbour.g) {
+                    neighbour.g = tempG;
+                    // TODO: Figure out how to calculate with multi ends.
+					neighbour.h = this.distance(neighbour, this.ends);
+					neighbour.f = neighbour.g + neighbour.h;
+					neighbour.previous = current;
+					
+					if(!openSet.includes(neighbour)) {
+						openSet.push(neighbour);
+					}
+
+				}
+			}
+			// break;
+		}
+        console.log("No solution");
+        return this.ends;
+	}
 }
