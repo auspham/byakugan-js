@@ -37,7 +37,7 @@ export class Byakugan {
                     val == this.settings.goal,
                     this.settings.callbacks
                 );
-        
+
                 _.push(newNode);
 
                 if (val == this.settings.start) {
@@ -82,7 +82,7 @@ export class Byakugan {
 
         if (shortestEnd) {
             let _remove = endNodes.indexOf(shortestEnd);
-            endNodes = endNodes.slice(_remove, 1);
+            endNodes.splice(_remove, 1);
         }
 
         return shortestEnd;
@@ -90,7 +90,7 @@ export class Byakugan {
 
     search(): Array<Result> {
         for (let i: number = 0; i < this.starts.length; i++) {
-            console.log("searching...", i);
+            console.log("Iteration", i)
             let startNode: Node = this.starts[i];
             let endNodes : Array<Node> = this.ends;
             let openSet  : Array<Node> = [startNode];
@@ -112,6 +112,8 @@ export class Byakugan {
                     if (current.goal) {
                         openSet = [startNode];
                         result.addResult(current);
+                        console.log("Done", end == null);
+                        break;
                     }
 
                     const _remove = openSet.indexOf(current);
@@ -123,8 +125,10 @@ export class Byakugan {
                         let tempG =
                             current.g + this.distance(current, neighbour);
 
-                        if (neighbour.obstacle || closeSet.includes(neighbour))
+                        if (neighbour.obstacle || closeSet.includes(neighbour)) {
+                            console.log("skippp")
                             continue;
+                        }
                         if (tempG > neighbour.g) {
                             neighbour.updateScore(
                                 tempG,

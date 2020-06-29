@@ -27,4 +27,5 @@ let settings = {
 }
 
 let b = new Byakugan(settings);
-console.log(b.search());
+let res = b.search();
+console.log(res[0].ends)
