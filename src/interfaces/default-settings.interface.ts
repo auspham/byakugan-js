@@ -2,11 +2,11 @@ import { Callbacks } from './callbacks.interface';
 
 export interface DefaultSettings {
     grid      : Array<Array<number>>;
-    diagonal  : boolean | false;
-    all       : boolean | false;
-    normal    : number | 0;
-    obstacle  : number | 1;
-    start     : number | 2;
-    goal      : number | 3;
+    diagonal  : boolean;
+    all       : boolean;
+    normal    : number;
+    obstacle  : number;
+    start     : number;
+    goal      : number;
     callbacks?: Callbacks;
 }

@@ -6,6 +6,7 @@ export class Result {
 
     constructor(start: Node) {
         this.start = start;
+        this.ends = [];
     }
 
     addResult(end: Node): void {

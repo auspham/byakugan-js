@@ -1,6 +1,7 @@
 import { Settings } from "./components/settings";
 import { Node } from "./components/node";
 import { Result } from "./components/result";
+import { DefaultSettings } from "./interfaces/default-settings.interface";
 
 export class Byakugan {
     private settings: Settings;
@@ -9,38 +10,50 @@ export class Byakugan {
     private ends    : Array<Node>;
     private results : Array<Result>;
 
-    constructor(settings: Settings) {
-        this.settings = settings;
+    constructor(settings: DefaultSettings) {
+        this.settings = new Settings(settings);
         this.starts   = [];
         this.ends     = [];
+        this.results  = [];
         this.constructNode(settings.grid);
     }
 
     constructNode(grid: Array<Array<number>>): void {
+        let tempGrid: Array<Array<Node>> = [];
+
         for (let row: number = 0; row < grid.length; row++) {
+            let _: Array<Node> = [];
+
             for (let col: number = 0; col < grid[0].length; col++) {
                 let val: number = grid[row][col];
-                // NOTE: this.grid still undefined;
-                this.grid[row][col] = new Node(
+                
+                let newNode:Node = new Node(
                     row,
                     col,
-                    this.grid,
+                    tempGrid,
                     this.settings.diagonal,
                     val == this.settings.obstacle,
                     val == this.settings.start,
                     val == this.settings.goal,
                     this.settings.callbacks
                 );
+        
+                _.push(newNode);
 
                 if (val == this.settings.start) {
-                    this.starts.push(this.grid[row][col]);
+                    this.starts.push(newNode);
                 }
 
                 if (val == this.settings.goal) {
-                    this.ends.push(this.grid[row][col]);
+                    this.ends.push(newNode);
                 }
+
             }
+
+            tempGrid.push(_);
         }
+
+        this.grid = tempGrid;
 
         for (let row: number = 0; row < this.grid.length; row++) {
             for (let col: number = 0; col < this.grid[0].length; col++) {
@@ -48,7 +61,6 @@ export class Byakugan {
             }
         }
 
-        this.search();
     }
 
     distance(a: Node, b: Node): number {
@@ -78,6 +90,7 @@ export class Byakugan {
 
     search(): Array<Result> {
         for (let i: number = 0; i < this.starts.length; i++) {
+            console.log("searching...", i);
             let startNode: Node = this.starts[i];
             let endNodes : Array<Node> = this.ends;
             let openSet  : Array<Node> = [startNode];
@@ -91,7 +104,7 @@ export class Byakugan {
                     let current = null;
 
                     for (let i = 0; i < openSet.length; i++) {
-                        if (!current.f || openSet[i].f < current.f) {
+                        if (!current || openSet[i].f < current.f) {
                             current = openSet[i];
                         }
                     }
