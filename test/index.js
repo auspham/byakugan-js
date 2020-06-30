@@ -2,11 +2,12 @@ const { Byakugan } = require('../build');
 
 let settings = {
     grid: [
-        [1, 2, 1, 1],
+        [1, 2, 1, 2],
         [1, 0, 0, 1],
-        [1, 1, 0, 3],
+        [1, 3, 3, 3],
       
     ],
+    all: true,
     diagonal: true,
     callback: function (row, col, obstacle, start, goal) {
         let width = Math.floor(w / this.grid[0].length);
@@ -28,4 +29,5 @@ let settings = {
 
 let b = new Byakugan(settings);
 let res = b.search();
-console.log(res[0].ends)
+
+console.log(res)

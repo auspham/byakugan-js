@@ -5,16 +5,16 @@ import { DefaultSettings } from "./interfaces/default-settings.interface";
 
 export class Byakugan {
     private settings: Settings;
-    private grid    : Array<Array<Node>>;
-    private starts  : Array<Node>;
-    private ends    : Array<Node>;
-    private results : Array<Result>;
+    private grid: Array<Array<Node>>;
+    private starts: Array<Node>;
+    private ends: Array<Node>;
+    private results: Array<Result>;
 
     constructor(settings: DefaultSettings) {
         this.settings = new Settings(settings);
-        this.starts   = [];
-        this.ends     = [];
-        this.results  = [];
+        this.starts = [];
+        this.ends = [];
+        this.results = [];
         this.constructNode(settings.grid);
     }
 
@@ -26,8 +26,8 @@ export class Byakugan {
 
             for (let col: number = 0; col < grid[0].length; col++) {
                 let val: number = grid[row][col];
-                
-                let newNode:Node = new Node(
+
+                let newNode: Node = new Node(
                     row,
                     col,
                     tempGrid,
@@ -47,7 +47,6 @@ export class Byakugan {
                 if (val == this.settings.goal) {
                     this.ends.push(newNode);
                 }
-
             }
 
             tempGrid.push(_);
@@ -60,7 +59,6 @@ export class Byakugan {
                 this.grid[row][col].addNeighbours();
             }
         }
-
     }
 
     distance(a: Node, b: Node): number {
@@ -89,30 +87,32 @@ export class Byakugan {
     }
 
     search(): Array<Result> {
-        for (let i: number = 0; i < this.starts.length; i++) {
-            console.log("Iteration", i)
-            let startNode: Node = this.starts[i];
-            let endNodes : Array<Node> = this.ends;
-            let openSet  : Array<Node> = [startNode];
-            let closeSet : Array<Node> = [];
-            let end      : Node | null;
+        for (let _: number = 0; _ < this.starts.length; _++) {
+            let startNode: Node = this.starts[_];
+            let endNodes: Array<Node> = this.ends;
+            let openSet: Array<Node> = [startNode];
+            let closeSet: Array<Node> = [];
+            let end: Node | null;
+            let result: Result = new Result(startNode);
+            let i: number = 0;
 
             while ((end = this.popShortest(startNode, endNodes)) !== null) {
-                let result : Result = new Result(startNode);
-
+                if(!this.settings.all) {
+                    endNodes = [];
+                }
                 while (openSet.length > 0) {
                     let current = null;
 
-                    for (let i = 0; i < openSet.length; i++) {
-                        if (!current || openSet[i].f < current.f) {
-                            current = openSet[i];
+                    for (let j = 0; j < openSet.length; j++) {
+                        if (!current || openSet[j].f < current.f) {
+                            current = openSet[j];
                         }
                     }
 
                     if (current.goal) {
                         openSet = [startNode];
+                        closeSet = [];
                         result.addResult(current);
-                        console.log("Done", end == null);
                         break;
                     }
 
@@ -120,19 +120,25 @@ export class Byakugan {
                     let [remove] = openSet.splice(_remove, 1);
                     closeSet.push(remove);
 
-                    for (let i = 0; i < current.neighbours.length; i++) {
-                        let neighbour = current.neighbours[i];
-                        let tempG =
-                            current.g + this.distance(current, neighbour);
+                    for (let j = 0; j < current.neighbours.length; j++) {
+                        let neighbour: Node = current.neighbours[j];
 
-                        if (neighbour.obstacle || closeSet.includes(neighbour)) {
-                            console.log("skippp")
+                        let tempG: number =
+                            current.getGScore(i) +
+                            this.distance(current, neighbour);
+
+                        if (
+                            neighbour.isObstacle() ||
+                            closeSet.includes(neighbour)
+                        ) {
                             continue;
                         }
-                        if (tempG > neighbour.g) {
+
+                        if (tempG > neighbour.getGScore(i)) {
                             neighbour.updateScore(
                                 tempG,
-                                this.distance(neighbour, end)
+                                this.distance(neighbour, end),
+                                i
                             );
                             neighbour.previous = current;
 
@@ -142,9 +148,9 @@ export class Byakugan {
                         }
                     }
                 }
-
-                this.results.push(result);
+                i++;
             }
+            this.results.push(result);
         }
         return this.results;
     }

@@ -12,11 +12,11 @@ export class Node {
     private goal      : boolean;
     private end       : boolean;
     private neighbours: Array<Node>;
-    private previous? : Node;
 
-    public g         : number;
-    public h         : number;
-    public f         : number;
+    public previous? : Node;
+    public g         : Array<number>;
+    public h         : Array<number>;
+    public f         : Array<number>;
     
     constructor(
         row       : number,
@@ -37,9 +37,13 @@ export class Node {
         this.goal       = goal;
         this.neighbours = [];
         this.previous   = null;
-        this.g          = this.h = this.f = 0;
 
         callbacks?.nodeConstructions(this);
+        this.initScore();
+    }
+
+    initScore(): void {
+        this.g = this.h = this.f = [0];
     }
 
     addDirection(directions): void {
@@ -78,9 +82,17 @@ export class Node {
 		this.addDirection(directions);
     }
 
-    updateScore(g: number, h: number): void {
-        this.g = g;
-        this.h = h;
-        this.f = g + h;
+    updateScore(g: number, h: number, i: number): void {
+        this.g[i] = g;
+        this.h[i] = h;
+        this.f[i] = g + h;
+    }
+
+    getGScore(i: number): number {
+        return this.g[i] ? this.g[i] : 0;
+    }
+
+    isObstacle(): boolean {
+        return this.obstacle;
     }
 }
