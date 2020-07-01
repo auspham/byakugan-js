@@ -5,7 +5,7 @@ import { DefaultSettings } from "./interfaces/default-settings.interface";
 
 export class Byakugan {
     private settings: Settings;
-    private grid: Array<Array<Node>>;
+    private grid: Array<Array<Array<Node>>>;
     private starts: Array<Node>;
     private ends: Array<Node>;
     private results: Array<Result>;
@@ -15,49 +15,70 @@ export class Byakugan {
         this.starts = [];
         this.ends = [];
         this.results = [];
+        this.grid = [];
         this.constructNode(settings.grid);
     }
 
     constructNode(grid: Array<Array<number>>): void {
-        let tempGrid: Array<Array<Node>> = [];
+        let startNodeCoords: Map<number, Array<number>> = new Map<number, Array<number>>();
+        let iter = startNodeCoords.entries();
 
         for (let row: number = 0; row < grid.length; row++) {
-            let _: Array<Node> = [];
-
             for (let col: number = 0; col < grid[0].length; col++) {
                 let val: number = grid[row][col];
-
-                let newNode: Node = new Node(
-                    row,
-                    col,
-                    tempGrid,
-                    this.settings.diagonal,
-                    val == this.settings.obstacle,
-                    val == this.settings.start,
-                    val == this.settings.goal,
-                    this.settings.callbacks
-                );
-
-                _.push(newNode);
-
-                if (val == this.settings.start) {
-                    this.starts.push(newNode);
-                }
-
-                if (val == this.settings.goal) {
-                    this.ends.push(newNode);
+                if ( val == this.settings.start ) {
+                    let coords: number[] = [row, col];
+                    if (startNodeCoords.get(row + col) !== null) {
+                        startNodeCoords.set(row + col, coords);
+                    }
                 }
             }
-
-            tempGrid.push(_);
         }
 
-        this.grid = tempGrid;
+        for (let i = 0; i < startNodeCoords.size; i++) {
+            let tempGrid: Array<Array<Node>> = [];
 
-        for (let row: number = 0; row < this.grid.length; row++) {
-            for (let col: number = 0; col < this.grid[0].length; col++) {
-                this.grid[row][col].addNeighbours();
+            for (let row: number = 0; row < grid.length; row++) {
+                let _: Array<Node> = [];
+    
+                for (let col: number = 0; col < grid[0].length; col++) {
+                    let val: number = grid[row][col];
+    
+                    let newNode: Node = new Node(
+                        row,
+                        col,
+                        tempGrid,
+                        this.settings.diagonal,
+                        val == this.settings.obstacle,
+                        val == this.settings.start,
+                        val == this.settings.goal,
+                        this.settings.callbacks
+                    );
+    
+                    _.push(newNode);
+                    
+                    if (i == 0) {
+                        if (val == this.settings.goal) {
+                            this.ends.push(newNode);
+                        }
+                    }
+                }
+                tempGrid.push(_);
             }
+
+            const [row, col] = iter.next().value[1];
+
+            this.starts.push(tempGrid[row][col]);
+            this.grid.push(tempGrid);
+        }
+
+        for (let i = 0; i < startNodeCoords.size; i++) {
+            for (let row: number = 0; row < this.grid[i].length; row++) {
+                for (let col: number = 0; col < this.grid[i][0].length; col++) {
+                    this.grid[i][row][col].addNeighbours();
+                }
+            }
+            
         }
     }
 
@@ -89,7 +110,7 @@ export class Byakugan {
     search(): Array<Result> {
         for (let _: number = 0; _ < this.starts.length; _++) {
             let startNode: Node = this.starts[_];
-            let endNodes: Array<Node> = this.ends;
+            let endNodes: Array<Node> = [...this.ends];
             let openSet: Array<Node> = [startNode];
             let closeSet: Array<Node> = [];
             let end: Node | null;
