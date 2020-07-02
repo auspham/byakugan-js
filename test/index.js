@@ -6,15 +6,16 @@ function setup() {
     createCanvas(w,h);
     let settings = {
         grid: [
-            [1, 2, 1, 2],
+            [1, 2, 0, 0],
             [1, 0, 0, 0],
             [0, 0, 0, 0],
+            [0, 0, 0, 0],
             [0, 0, 1, 0],
-            [1, 3, 3, 3],
+            [1, 3, 0, 0],
           
         ],
         all: true,
-        diagonal: true,
+        diagonal: false,
         callbacks: {
             nodeConstructions: function (node) {
                
@@ -45,7 +46,7 @@ function setup() {
         let random = Math.floor(Math.random() * Math.floor(255));
         console.log('a')
         while(current.previous) {
-            fill(`rgba(${random}, ${random}, 0, 0.25)`);
+            fill(`rgba(0, 255, 0, 0.25)`);
             rect(current.col * width, current.row * height, width, height)
             current = current.previous;
         }
