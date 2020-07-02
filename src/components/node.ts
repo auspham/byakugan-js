@@ -60,7 +60,7 @@ export class Node {
 			}
 		}
     }
-
+    
     addNeighbours(): void {
         let directions: Array<Array<number>> = [
 			[1, 0],

@@ -5,7 +5,7 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && browserify build/index.js -s Byakugan > build/bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
