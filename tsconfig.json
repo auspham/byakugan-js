@@ -3,7 +3,9 @@
         "outDir": "./build",
         "target": "es5",
         "declaration": true,
-        "lib": ["es2015.core", "es5", "es2017", "dom"]
+        "lib": ["es2015.core", "es5", "es2017", "dom"],
+        "module": "amd",
+        "outFile": "./build/index.js",
     },
     "include": ["src"],
     "exclude": ["node_modules"]
