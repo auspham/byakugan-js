@@ -147,6 +147,9 @@ export default class Byakugan {
                         let tempG: number =
                             current.getGScore(i) +
                             this.distance(current, neighbour);
+                        // console.log('current', current)
+                        console.log("current.getGScore(i)", current.getGScore(i), current.g, 
+                        current.f, current.h, tempG, this.distance(current, neighbour), this.distance(neighbour, end));
 
                         if (
                             neighbour.isObstacle() ||

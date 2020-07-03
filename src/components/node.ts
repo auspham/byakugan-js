@@ -37,14 +37,17 @@ export class Node {
         this.goal       = goal;
         this.neighbours = [];
         this.previous   = null;
+        this.g          = [0];
+        this.h          = [0];
+        this.f          = [0];
 
         callbacks?.nodeConstructions(this);
-        this.initScore();
+        // this.initScore();
     }
 
-    initScore(): void {
-        this.g = this.h = this.f = [0];
-    }
+    // initScore(): void {
+    //     this.g = this.h = this.f = [0];
+    // }
 
     addDirection(directions): void {
         for (const d in directions) {
@@ -83,9 +86,12 @@ export class Node {
     }
 
     updateScore(g: number, h: number, i: number): void {
-        this.g[i] = g;
+        console.log('before things', this.g, "g", g, "h", h, "i", i)
+        this.g[i] = g
         this.h[i] = h;
         this.f[i] = g + h;
+        console.log('i', i, 'g', g, 'g[i]', this.g[i], this.g[i] == g)
+        console.log('--updating score', this.row, this.col, ":", this.g, this.h, this.f, "tempG", g)
     }
 
     getGScore(i: number): number {

@@ -45,10 +45,15 @@ function setup() {
         let current = result;
         let random = Math.floor(Math.random() * Math.floor(255));
         console.log('a')
+        let i = 0;
         while(current.previous) {
+            fill(255,0,0);
+            textAlign(CENTER, CENTER);
+            text(i, current.col * width + width / 2, current.row * height + height/2);
             fill(`rgba(0, 255, 0, 0.25)`);
             rect(current.col * width, current.row * height, width, height)
             current = current.previous;
+            i++;
         }
     });
 }
