@@ -110,14 +110,16 @@ export default class Byakugan {
     search(): Array<Result> {
         for (let _: number = 0; _ < this.starts.length; _++) {
             let startNode: Node = this.starts[_];
-            let endNodes: Array<Node> = [...this.ends];
+            let endNodes: Array<Node> = this.ends;
             let openSet: Array<Node> = [startNode];
             let closeSet: Array<Node> = [];
             let end: Node | null;
             let result: Result = new Result(startNode);
             let i: number = 0;
+            
 
             while ((end = this.popShortest(startNode, endNodes)) !== null) {
+                console.log('end', end);
                 if(!this.settings.all) {
                     endNodes = [];
                 }
@@ -130,10 +132,11 @@ export default class Byakugan {
                         }
                     }
 
-                    if (current.goal) {
+                    if (current == end) {
                         openSet = [startNode];
                         closeSet = [];
                         result.addResult(current);
+                        console.log('current', current)
                         break;
                     }
 
@@ -147,10 +150,7 @@ export default class Byakugan {
                         let tempG: number =
                             current.getGScore(i) +
                             this.distance(current, neighbour);
-                        // console.log('current', current)
-                        console.log("current.getGScore(i)", current.getGScore(i), current.g, 
-                        current.f, current.h, tempG, this.distance(current, neighbour), this.distance(neighbour, end));
-
+                        
                         if (
                             neighbour.isObstacle() ||
                             closeSet.includes(neighbour)
