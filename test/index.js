@@ -42,7 +42,7 @@ function setup() {
     console.log('res', res)
     let nodeA = res[0].ends
 
-    let current = nodeA[1];
+    let current = nodeA[0];
     let i = 0
     while(current.previous) {
         fill(255,0,0);

@@ -119,15 +119,18 @@ export default class Byakugan {
             
 
             while ((end = this.popShortest(startNode, endNodes)) !== null) {
-                console.log('end', end);
+                
                 if(!this.settings.all) {
                     endNodes = [];
                 }
                 while (openSet.length > 0) {
                     let current = null;
-
                     for (let j = 0; j < openSet.length; j++) {
-                        if (!current || openSet[j].f < current.f) {
+                        // if(current !== null) {
+
+                        //     console.log(openSet[j].f[i], current.f[i], current.f, i)
+                        // }
+                        if (!current || openSet[j].f[i] < current.f[i]) {
                             current = openSet[j];
                         }
                     }
@@ -137,6 +140,7 @@ export default class Byakugan {
                         closeSet = [];
                         result.addResult(current);
                         console.log('current', current)
+                        i++;
                         break;
                     }
 
@@ -157,6 +161,7 @@ export default class Byakugan {
                         ) {
                             continue;
                         }
+                        console.log('neighbour', neighbour)
 
                         if (tempG > neighbour.getGScore(i)) {
                             neighbour.updateScore(
@@ -172,7 +177,6 @@ export default class Byakugan {
                         }
                     }
                 }
-                i++;
             }
             this.results.push(result);
         }
