@@ -88,7 +88,17 @@ export class Node {
     }
 
     getGScore(i: number): number {
-        return this.g[i] ? this.g[i] : 0;
+        if(!this.g[i]) {
+            this.g[i] = 0
+        }
+        return this.g[i];
+    }
+
+    getFScore(i: number): number {
+        if (!this.f[i]) {
+            this.f[i] = 0;
+        }
+        return this.f[i];
     }
 
     isObstacle(): boolean {

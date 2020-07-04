@@ -107,39 +107,47 @@ export default class Byakugan {
         return shortestEnd;
     }
 
+    checkGoal(node, end): boolean {
+        return node.col == end.col && node.row == end.row;
+    }
+
     search(): Array<Result> {
         for (let _: number = 0; _ < this.starts.length; _++) {
             let startNode: Node = this.starts[_];
-            let endNodes: Array<Node> = this.ends;
+            let endNodes: Array<Node> = [...this.ends];
             let openSet: Array<Node> = [startNode];
             let closeSet: Array<Node> = [];
             let end: Node | null;
             let result: Result = new Result(startNode);
             let i: number = 0;
-            
+            console.log("=====================================");
+            console.log("closeSet", closeSet);
+            console.log("startNode", startNode);
+            console.log("openSet", openSet);
+            console.log("endNodes", endNodes);
 
             while ((end = this.popShortest(startNode, endNodes)) !== null) {
-                
+                /**
+                 * TODO: PREVIOUS is getting overwritten. we need to
+                 * make sure that the node have another separate copy.
+                 */
                 if(!this.settings.all) {
                     endNodes = [];
                 }
                 while (openSet.length > 0) {
                     let current = null;
-                    for (let j = 0; j < openSet.length; j++) {
-                        // if(current !== null) {
-
-                        //     console.log(openSet[j].f[i], current.f[i], current.f, i)
-                        // }
-                        if (!current || openSet[j].f[i] < current.f[i]) {
+                    for (let j = 0; j < openSet.length; j++) {     
+                        if (!current || (openSet[j].getFScore(i) < current.getFScore(i))) {
+                            openSet[j].getFScore(i);
                             current = openSet[j];
                         }
                     }
 
-                    if (current == end) {
+                    if (this.checkGoal(current, end)) {
                         openSet = [startNode];
                         closeSet = [];
                         result.addResult(current);
-                        console.log('current', current)
+                        console.log('Done', current)
                         i++;
                         break;
                     }
@@ -150,7 +158,6 @@ export default class Byakugan {
 
                     for (let j = 0; j < current.neighbours.length; j++) {
                         let neighbour: Node = current.neighbours[j];
-
                         let tempG: number =
                             current.getGScore(i) +
                             this.distance(current, neighbour);
@@ -161,9 +168,10 @@ export default class Byakugan {
                         ) {
                             continue;
                         }
-                        console.log('neighbour', neighbour)
 
                         if (tempG > neighbour.getGScore(i)) {
+                            console.log("n", neighbour);
+
                             neighbour.updateScore(
                                 tempG,
                                 this.distance(neighbour, end),

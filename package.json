@@ -5,6 +5,7 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
+    "dev": "watch 'npm run build' src",
     "build": "tsc && browserify build/index.js -s Byakugan > build/bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -25,7 +26,8 @@
   "author": "rockmanvnx6",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.5",
+    "watch": "^1.0.2"
   },
   "dependencies": {}
 }
