@@ -14,9 +14,9 @@ export class Node {
     private neighbours: Array<Node>;
 
     public previous? : Node;
-    public g         : Array<number>;
-    public h         : Array<number>;
-    public f         : Array<number>;
+    public g         : number;
+    public h         : number;
+    public f         : number;
     
     constructor(
         row       : number,
@@ -37,9 +37,9 @@ export class Node {
         this.goal       = goal;
         this.neighbours = [];
         this.previous   = null;
-        this.g          = [0];
-        this.h          = [0];
-        this.f          = [0];
+        this.g          = 0;
+        this.h          = 0;
+        this.f          = 0;
 
         callbacks?.nodeConstructions(this);
         // this.initScore();
@@ -81,10 +81,10 @@ export class Node {
 		this.addDirection(directions);
     }
 
-    updateScore(g: number, h: number, i: number): void {
-        this.g[i] = g
-        this.h[i] = h;
-        this.f[i] = g + h;
+    updateScore(g: number, h: number): void {
+        this.g = g
+        this.h = h;
+        this.f = g + h;
     }
 
     getGScore(i: number): number {

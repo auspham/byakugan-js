@@ -8,10 +8,10 @@ function setup() {
         grid: [
             [1, 2, 0, 0],
             [1, 0, 0, 0],
-            [0, 0, 0, 0],
-            [0, 0, 0, 3],
-            [0, 0, 1, 1],
-            [1, 0, 3, 1],
+            [0, 1, 0, 0],
+            [0, 1, 0, 3],
+            [0, 1, 1, 1],
+            [3, 0, 0, 1],
           
         ],
         all: true,
@@ -40,19 +40,20 @@ function setup() {
     let b = new Byakugan(settings);
     let res = b.search();
     console.log('res', res)
-    let nodeA = res[0].ends
+    // let nodeA = res[0].ends
 
-    let current = nodeA[0];
-    let i = 0
-    while(current.previous) {
-        fill(255,0,0);
-        textAlign(CENTER, CENTER);
-        text(i, current.col * width + width / 2, current.row * height + height/2);
-        fill(`rgba(0, 255, 0, 0.25)`);
-        rect(current.col * width, current.row * height, width, height)
-        current = current.previous;
-        i++
-    }
+    // let current = nodeA[0];
+    // // TODO : Error in the first goal at 3,3
+    // let i = 0
+    // while(current.previous) {
+    //     fill(255,0,0);
+    //     textAlign(CENTER, CENTER);
+    //     text(i, current.col * width + width / 2, current.row * height + height/2);
+    //     fill(`rgba(0, 255, 0, 0.25)`);
+    //     rect(current.col * width, current.row * height, width, height)
+    //     current = current.previous;
+    //     i++
+    // }
     // nodeA.forEach(result => {
     //     let current = result;
     //     let random = Math.floor(Math.random() * Math.floor(255));

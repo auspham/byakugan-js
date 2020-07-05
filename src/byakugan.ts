@@ -78,8 +78,28 @@ export default class Byakugan {
                     this.grid[i][row][col].addNeighbours();
                 }
             }
-            
         }
+        for (let i = 0; i < this.starts.length; i++) {
+            let start: Node = this.clone<Node>(this.starts[i]);
+
+            for (let j = 0; j < this.ends.length; j++) {
+                let end = this.clone<Node>(this.ends[j]);
+                console.log("================")
+                /* 
+                    THE START NODE KEEPS BEING OVERWRITTEN, AS WELL AS ALL ITS OTHER NODES
+                    WE NEED TO RESTART ALL NODE SOMEHOW WITH ALL SCORE, OR SAVE THE INITAL STATE OF
+                    THE GRID.
+                */
+                console.log("start", start, "end", end, "i", i, "j", j); 
+                console.log("-->", this.search(start,end));
+            }
+        }
+    }
+
+    clone<T>(instance: T): T {
+        const copy = new (instance.constructor as { new (): T })();
+        Object.assign(copy, instance);
+        return copy;
     }
 
     distance(a: Node, b: Node): number {
@@ -108,87 +128,74 @@ export default class Byakugan {
     }
 
     checkGoal(node, end): boolean {
-        return node.col == end.col && node.row == end.row;
+        if (node && end) {
+            return node.col == end.col && node.row == end.row;
+        }
     }
 
-    search(): Array<Result> {
-        for (let _: number = 0; _ < this.starts.length; _++) {
-            let startNode: Node = this.starts[_];
-            let endNodes: Array<Node> = [...this.ends];
-            let openSet: Array<Node> = [startNode];
-            let closeSet: Array<Node> = [];
-            let end: Node | null;
-            let result: Result = new Result(startNode);
-            let i: number = 0;
-            console.log("=====================================");
-            console.log("closeSet", closeSet);
-            console.log("startNode", startNode);
-            console.log("openSet", openSet);
-            console.log("endNodes", endNodes);
+    search(start: any, end: any): Node | null {
 
-            while ((end = this.popShortest(startNode, endNodes)) !== null) {
-                /**
-                 * TODO: PREVIOUS is getting overwritten. we need to
-                 * make sure that the node have another separate copy.
-                 */
-                if(!this.settings.all) {
-                    endNodes = [];
+        let openSet: Array<Node> = [start];
+        let closeSet: Array<Node> = [];
+        // let result: Result = new Result(start);
+
+        // if(!this.settings.all) {
+        //     endNodes = [];
+        // }
+
+        while (openSet.length > 0) {
+            let current = null;
+
+            for (let j = 0; j < openSet.length; j++) {     
+                if (!current || (openSet[j].f < current.f)) {
+                    if(current) {
+                        console.log("openSet f", openSet[j].f, "current f", current.f);
+                    }
+                    current = openSet[j];
                 }
-                while (openSet.length > 0) {
-                    let current = null;
-                    for (let j = 0; j < openSet.length; j++) {     
-                        if (!current || (openSet[j].getFScore(i) < current.getFScore(i))) {
-                            openSet[j].getFScore(i);
-                            current = openSet[j];
-                        }
-                    }
+            }
+            console.log('openSet', openSet);
+            
+            if (this.checkGoal(current, end)) {
+                console.log("Done")
+                return end;
+            }
 
-                    if (this.checkGoal(current, end)) {
-                        openSet = [startNode];
-                        closeSet = [];
-                        result.addResult(current);
-                        console.log('Done', current)
-                        i++;
-                        break;
-                    }
+            const _remove = openSet.indexOf(current);
+            let [remove] = openSet.splice(_remove, 1);
+            closeSet.push(remove);
 
-                    const _remove = openSet.indexOf(current);
-                    let [remove] = openSet.splice(_remove, 1);
-                    closeSet.push(remove);
+            console.log('current', current);
 
-                    for (let j = 0; j < current.neighbours.length; j++) {
-                        let neighbour: Node = current.neighbours[j];
-                        let tempG: number =
-                            current.getGScore(i) +
-                            this.distance(current, neighbour);
-                        
-                        if (
-                            neighbour.isObstacle() ||
-                            closeSet.includes(neighbour)
-                        ) {
-                            continue;
-                        }
+            for (let j = 0; j < current.neighbours.length; j++) {
+                let neighbour: Node = current.neighbours[j];
 
-                        if (tempG > neighbour.getGScore(i)) {
-                            console.log("n", neighbour);
+                let tempG: number =
+                    current.g +
+                    this.distance(current, neighbour);
+                
+                if (
+                    neighbour.isObstacle() ||
+                    closeSet.includes(neighbour)
+                ) {
+                    continue;
+                }
 
-                            neighbour.updateScore(
-                                tempG,
-                                this.distance(neighbour, end),
-                                i
-                            );
-                            neighbour.previous = current;
+                if (tempG > neighbour.g) {
 
-                            if (!openSet.includes(neighbour)) {
-                                openSet.push(neighbour);
-                            }
-                        }
+                    neighbour.updateScore(
+                        tempG,
+                        this.distance(neighbour, end),
+                    );
+                    neighbour.previous = current;
+
+                    if (!openSet.includes(neighbour)) {
+                        openSet.push(neighbour);
                     }
                 }
             }
-            this.results.push(result);
-        }
-        return this.results;
+        }        
+        return null;
     }
 }
 
