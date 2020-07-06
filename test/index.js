@@ -6,7 +6,7 @@ function setup() {
     createCanvas(w,h);
     let settings = {
         grid: [
-            [1, 0, 0, 0],
+            [1, 3, 0, 0],
             [1, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 1, 0, 3],
@@ -14,8 +14,8 @@ function setup() {
             [3, 0, 0, 1],
           
         ],
-        obstacle: 1,
-        diagonal: false,
+        obstacles: [1,3],
+        diagonal: true,
         callbacks: {
             nodeConstructions: function (node) {
                 console.log(node);
@@ -40,14 +40,12 @@ function setup() {
 
     res.forEach(node => {
         const [row,col] = node;
-        console.log('drawing', col, row)
         fill(`rgba(0, 255, 0, 0.25)`);
         rect(col * width, row * height, width, height)
     })
 
     res2.forEach(node => {
         const [row,col] = node;
-        console.log('drawing', col, row)
         fill(`rgba(255, 0, 0, 0.25)`);
         rect(col * width, row * height, width, height)
     })

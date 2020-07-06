@@ -2,7 +2,7 @@
  *  Byakugan-js
  *  github.com/rockmanvnx6/byakugan
  *  Licensed under the MIT license.
- * 
+ *
  *  Author: Ngoc Thang Pham (Austin) (@rockmanvnx6)
  */
 import { Settings } from "./components/settings";
@@ -19,8 +19,12 @@ export default class Byakugan {
         this.constructNode(settings.grid);
     }
 
+    private isObstacle(val: number, obstacles: Set<number>): boolean {
+        return obstacles.has(val);
+    }
+
     /**
-     * Construct a grid of nodes based on the 2D array 
+     * Construct a grid of nodes based on the 2D array
      * passed from settings and then add neighbours for each node.
      *
      * @private
@@ -28,7 +32,6 @@ export default class Byakugan {
      * @memberof Byakugan
      */
     private constructNode(grid: Array<Array<number>>): void {
-        
         for (let row: number = 0; row < grid.length; row++) {
             let _: Array<Node> = [];
 
@@ -40,7 +43,7 @@ export default class Byakugan {
                     col,
                     this.grid,
                     this.settings.diagonal,
-                    val == this.settings.obstacle,
+                    this.isObstacle(val, this.settings.obstacles),
                     this.settings.callbacks
                 );
 
@@ -54,7 +57,6 @@ export default class Byakugan {
                 this.grid[row][col].addNeighbours();
             }
         }
-
     }
 
     /**
@@ -101,7 +103,7 @@ export default class Byakugan {
     }
 
     /**
-     * Trace back and return a 2D array consisting of 
+     * Trace back and return a 2D array consisting of
      * the nodes' coordinations.
      *
      * @private
@@ -112,7 +114,7 @@ export default class Byakugan {
     private getResult(end: Node): Array<Array<number>> {
         let result: Array<Array<number>> = [];
         let current = end;
-        while(current.previous) {
+        while (current.previous) {
             result.unshift([current.row, current.col]);
             current = current.previous;
         }
@@ -123,30 +125,35 @@ export default class Byakugan {
      * Implementation of A* algorithm. Following the pseudo code
      * from https://en.wikipedia.org/wiki/A*_search_algorithm
      *
-     * @param {*} x1
-     * @param {*} y1
-     * @param {*} x2
-     * @param {*} y2
+     * @param {number} x1
+     * @param {number} y1
+     * @param {number} x2
+     * @param {number} y2
      * @returns {Array<Array<number>>}
      * @memberof Byakugan
      */
-    public search(x1, y1, x2, y2): Array<Array<number>> {
+    public search(
+        x1: number,
+        y1: number,
+        x2: number,
+        y2: number
+    ): Array<Array<number>> {
         this.resetGrid();
 
-        let start: Node           = this.grid[x1][y1];
-        let end: Node             = this.grid[x2][y2];
-        let openSet: Array<Node>  = [start];
+        let start: Node = this.grid[x1][y1];
+        let end: Node = this.grid[x2][y2];
+        let openSet: Array<Node> = [start];
         let closeSet: Array<Node> = [];
 
         while (openSet.length > 0) {
             let current = null;
 
-            for (let j = 0; j < openSet.length; j++) {     
-                if (!current || (openSet[j].f < current.f)) {
+            for (let j = 0; j < openSet.length; j++) {
+                if (!current || openSet[j].f < current.f) {
                     current = openSet[j];
                 }
             }
-            
+
             if (this.checkGoal(current, end)) {
                 return this.getResult(current);
             }
@@ -159,21 +166,14 @@ export default class Byakugan {
                 let neighbour: Node = current.neighbours[j];
 
                 let tempG: number =
-                    current.g +
-                    this.distance(current, neighbour);
-                
-                if (
-                    neighbour.isObstacle() ||
-                    closeSet.includes(neighbour)
-                ) {
+                    current.g + this.distance(current, neighbour);
+
+                if (neighbour.isObstacle() || closeSet.includes(neighbour)) {
                     continue;
                 }
 
                 if (tempG > neighbour.g) {
-                    neighbour.updateScore(
-                        tempG,
-                        this.distance(neighbour, end),
-                    );
+                    neighbour.updateScore(tempG, this.distance(neighbour, end));
                     neighbour.previous = current;
 
                     if (!openSet.includes(neighbour)) {
@@ -181,8 +181,7 @@ export default class Byakugan {
                     }
                 }
             }
-        }        
+        }
         return [];
     }
 }
-

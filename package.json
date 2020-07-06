@@ -20,9 +20,7 @@
         "Astar",
         "ninja"
     ],
-    "files": [
-        "build/*"
-    ],
+
     "author": "rockmanvnx6",
     "license": "ISC",
     "devDependencies": {
