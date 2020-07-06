@@ -23,10 +23,11 @@ export default class Byakugan {
      * Construct a grid of nodes based on the 2D array 
      * passed from settings and then add neighbours for each node.
      *
+     * @private
      * @param {Array<Array<number>>} grid
      * @memberof Byakugan
      */
-    constructNode(grid: Array<Array<number>>): void {
+    private constructNode(grid: Array<Array<number>>): void {
         
         for (let row: number = 0; row < grid.length; row++) {
             let _: Array<Node> = [];
@@ -60,21 +61,23 @@ export default class Byakugan {
      * Calculate the distance between 2 nodes based on theirs positions
      * on the grid.
      *
+     * @private
      * @param {Node} a
      * @param {Node} b
      * @returns {number}
      * @memberof Byakugan
      */
-    distance(a: Node, b: Node): number {
+    private distance(a: Node, b: Node): number {
         return Math.hypot(a.row - b.row, a.col - b.col);
     }
 
     /**
      * Reset the node values for each node in the grid.
      *
+     * @private
      * @memberof Byakugan
      */
-    resetGrid(): void {
+    private resetGrid(): void {
         for (let row: number = 0; row < this.grid.length; row++) {
             for (let col: number = 0; col < this.grid[0].length; col++) {
                 this.grid[row][col].reset();
@@ -85,12 +88,13 @@ export default class Byakugan {
     /**
      * Check if a node is goal based on its position.
      *
+     * @private
      * @param {Node} node
      * @param {Node} end
      * @returns {boolean}
      * @memberof Byakugan
      */
-    checkGoal(node: Node, end: Node): boolean {
+    private checkGoal(node: Node, end: Node): boolean {
         if (node) {
             return node.col == end.col && node.row == end.row;
         }
@@ -100,11 +104,12 @@ export default class Byakugan {
      * Trace back and return a 2D array consisting of 
      * the nodes' coordinations.
      *
+     * @private
      * @param {Node} end
      * @returns {Array<Array<number>>}
      * @memberof Byakugan
      */
-    getResult(end: Node): Array<Array<number>> {
+    private getResult(end: Node): Array<Array<number>> {
         let result: Array<Array<number>> = [];
         let current = end;
         while(current.previous) {
@@ -125,7 +130,7 @@ export default class Byakugan {
      * @returns {Array<Array<number>>}
      * @memberof Byakugan
      */
-    search(x1, y1, x2, y2): Array<Array<number>> {
+    public search(x1, y1, x2, y2): Array<Array<number>> {
         this.resetGrid();
 
         let start: Node           = this.grid[x1][y1];

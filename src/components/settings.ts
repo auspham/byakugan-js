@@ -5,10 +5,16 @@ enum DefaultType {
     obstacle = 1,
 }
 
+/**
+ * Convert Javascript settings object to TypeScript class.
+ * Stores the default settings of Byakugan.
+ *
+ * @export
+ * @class Settings
+ */
 export class Settings {
     public grid     : Array<Array<number>>;
     public diagonal : boolean;
-
     public obstacle : number;
     public callbacks: Callbacks;
 

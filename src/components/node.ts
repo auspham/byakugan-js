@@ -1,6 +1,12 @@
 import { Settings } from './settings';
 import { Callbacks } from '../interfaces/callbacks.interface';
 
+/**
+ * Implementation of node representing a single tile in the grid.
+ *
+ * @export
+ * @class Node
+ */
 export class Node {
     public row       : number;
     public col       : number;
@@ -15,6 +21,10 @@ export class Node {
     public h         : number;
     public f         : number;
     
+    /**
+     *Creates an instance of Node.
+
+     */
     constructor(
         row       : number,
         col       : number,
@@ -35,7 +45,14 @@ export class Node {
         callbacks?.nodeConstructions(this.get());
     }
 
-    addDirection(directions): void {
+    /**
+     * Add neighbours to the node given the directions.
+     *
+     * @private
+     * @param {*} directions
+     * @memberof Node
+     */
+    private addNeighboursFromDirections(directions): void {
         for (const d in directions) {
 			if (directions.hasOwnProperty(d)) {
 				const direct: Array<number> = directions[d];
@@ -50,7 +67,12 @@ export class Node {
 		}
     }
     
-    addNeighbours(): void {
+    /**
+     * Prepare the directions and call addNeighboursFromDirections.
+     *
+     * @memberof Node
+     */
+    public addNeighbours(): void {
         let directions: Array<Array<number>> = [
 			[1, 0],
 			[0, -1],
@@ -68,25 +90,49 @@ export class Node {
 			directions = directions.concat(diagonalsDirection);
 		}
 		
-		this.addDirection(directions);
+		this.addNeighboursFromDirections(directions);
     }
 
-    reset(): void {
+    /**
+     * Reset the scores and the previous node.
+     *
+     * @memberof Node
+     */
+    public reset(): void {
         this.f = this.g = this.h = 0;
         this.previous = null;
     }
 
-    updateScore(g: number, h: number): void {
+    /**
+     * Update the scores given g, h of a node.
+     *
+     * @param {number} g
+     * @param {number} h
+     * @memberof Node
+     */
+    public updateScore(g: number, h: number): void {
         this.g = g
         this.h = h;
         this.f = g + h;
     }
 
-    isObstacle(): boolean {
+    /**
+     * Return a boolean indicating if the tile is obstacle.
+     *
+     * @returns {boolean}
+     * @memberof Node
+     */
+    public isObstacle(): boolean {
         return this.obstacle;
     }
 
-    get(): Object {
+    /**
+     * Return a Object with row, col, obstacle values.
+     *
+     * @returns {Object}
+     * @memberof Node
+     */
+    public get(): Object {
         return { row: this.row, col: this.col, obstacle: this.obstacle }
     }
 }
