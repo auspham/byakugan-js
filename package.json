@@ -1,33 +1,33 @@
 {
-  "name": "byakugan-js",
-  "version": "1.0.9",
-  "description": "Path finding algorithm for sensory type ninjas.",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
-  "scripts": {
-    "dev": "watch 'npm run build' src",
-    "build": "tsc && browserify build/index.js -s Byakugan > build/bundle.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rockmanvnx6/byakugan.git"
-  },
-  "keywords": [
-    "Path",
-    "finding",
-    "Array",
-    "Astar",
-    "ninja"
-  ],
-  "files": [
-    "build/*"
-  ],
-  "author": "rockmanvnx6",
-  "license": "ISC",
-  "devDependencies": {
-    "typescript": "^3.9.5",
-    "watch": "^1.0.2"
-  },
-  "dependencies": {}
+    "name": "byakugan-js",
+    "version": "1.0.9",
+    "description": "Path finding algorithm for sensory type ninjas.",
+    "main": "build/index.js",
+    "types": "build/index.d.ts",
+    "scripts": {
+        "dev": "watch 'npm run build' src",
+        "build": "tsc && browserify build/index.js -s Byakugan | uglifyjs > build/byakugan.min.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rockmanvnx6/byakugan.git"
+    },
+    "keywords": [
+        "Path",
+        "finding",
+        "Array",
+        "Astar",
+        "ninja"
+    ],
+
+    "author": "rockmanvnx6",
+    "license": "ISC",
+    "devDependencies": {
+        "browserify": "^16.5.1",
+        "typescript": "^3.9.5",
+        "uglify-js": "^3.10.0",
+        "watch": "^1.0.2"
+    },
+    "dependencies": {}
 }

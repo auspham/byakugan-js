@@ -1,12 +1,14 @@
 import { Callbacks } from './callbacks.interface';
 
+/**
+ * List of available settings.
+ *
+ * @export
+ * @interface DefaultSettings
+ */
 export interface DefaultSettings {
     grid      : Array<Array<number>>;
     diagonal  : boolean;
-    all       : boolean;
-    normal    : number;
-    obstacle  : number;
-    start     : number;
-    goal      : number;
+    obstacles : Array<number>;
     callbacks?: Callbacks;
 }

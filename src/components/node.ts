@@ -1,6 +1,12 @@
 import { Settings } from './settings';
 import { Callbacks } from '../interfaces/callbacks.interface';
 
+/**
+ * Implementation of node representing a single tile in the grid.
+ *
+ * @export
+ * @class Node
+ */
 export class Node {
     public row       : number;
     public col       : number;
@@ -8,24 +14,19 @@ export class Node {
     private grid      : Array<Array<Node>>;
     private diagonal  : boolean;
     private obstacle  : boolean;
-    private start     : boolean;
-    private goal      : boolean;
-    private end       : boolean;
     private neighbours: Array<Node>;
 
     public previous? : Node;
-    public g         : Array<number>;
-    public h         : Array<number>;
-    public f         : Array<number>;
-    
+    public g         : number;
+    public h         : number;
+    public f         : number;
+
     constructor(
         row       : number,
         col       : number,
         grid      : Array<Array<Node>>,
         diagonal  : boolean,
         obstacle  : boolean,
-        start     : boolean,
-        goal      : boolean,
         callbacks?: Callbacks,
     ) {
         this.row        = row;
@@ -33,19 +34,21 @@ export class Node {
         this.grid       = grid;
         this.obstacle   = obstacle;
         this.diagonal   = diagonal;
-        this.start      = start;
-        this.goal       = goal;
         this.neighbours = [];
         this.previous   = null;
-        this.g          = [0];
-        this.h          = [0];
-        this.f          = [0];
+        this.g          = this.h = this.f = 0;
 
-        callbacks?.nodeConstructions(this);
-        // this.initScore();
+        callbacks?.nodeConstructions(this.get());
     }
 
-    addDirection(directions): void {
+    /**
+     * Add neighbours to the node given the directions.
+     *
+     * @private
+     * @param {*} directions
+     * @memberof Node
+     */
+    private addNeighboursFromDirections(directions): void {
         for (const d in directions) {
 			if (directions.hasOwnProperty(d)) {
 				const direct: Array<number> = directions[d];
@@ -60,7 +63,12 @@ export class Node {
 		}
     }
     
-    addNeighbours(): void {
+    /**
+     * Prepare the directions and call addNeighboursFromDirections.
+     *
+     * @memberof Node
+     */
+    public addNeighbours(): void {
         let directions: Array<Array<number>> = [
 			[1, 0],
 			[0, -1],
@@ -78,30 +86,49 @@ export class Node {
 			directions = directions.concat(diagonalsDirection);
 		}
 		
-		this.addDirection(directions);
+		this.addNeighboursFromDirections(directions);
     }
 
-    updateScore(g: number, h: number, i: number): void {
-        this.g[i] = g
-        this.h[i] = h;
-        this.f[i] = g + h;
+    /**
+     * Reset the scores and the previous node.
+     *
+     * @memberof Node
+     */
+    public reset(): void {
+        this.f = this.g = this.h = 0;
+        this.previous = null;
     }
 
-    getGScore(i: number): number {
-        if(!this.g[i]) {
-            this.g[i] = 0
-        }
-        return this.g[i];
+    /**
+     * Update the scores given g, h of a node.
+     *
+     * @param {number} g
+     * @param {number} h
+     * @memberof Node
+     */
+    public updateScore(g: number, h: number): void {
+        this.g = g
+        this.h = h;
+        this.f = g + h;
     }
 
-    getFScore(i: number): number {
-        if (!this.f[i]) {
-            this.f[i] = 0;
-        }
-        return this.f[i];
-    }
-
-    isObstacle(): boolean {
+    /**
+     * Return a boolean indicating if the tile is obstacle.
+     *
+     * @returns {boolean}
+     * @memberof Node
+     */
+    public isObstacle(): boolean {
         return this.obstacle;
+    }
+
+    /**
+     * Return a Object with row, col, obstacle values.
+     *
+     * @returns {Object}
+     * @memberof Node
+     */
+    public get(): Object {
+        return { row: this.row, col: this.col, obstacle: this.obstacle }
     }
 }
