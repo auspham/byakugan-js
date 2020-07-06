@@ -6,20 +6,18 @@ function setup() {
     createCanvas(w,h);
     let settings = {
         grid: [
-            [1, 2, 0, 0],
             [1, 0, 0, 0],
-            [0, 1, 0, 0],
+            [1, 0, 0, 0],
+            [0, 0, 0, 0],
             [0, 1, 0, 3],
             [0, 1, 1, 1],
             [3, 0, 0, 1],
           
         ],
-        all: true,
-        diagonal: true,
+        diagonal: false,
         callbacks: {
             nodeConstructions: function (node) {
-               
-        
+                console.log(node);
                 if (node.obstacle) {
                     fill(0);
                 } else if (node.start) {
@@ -34,41 +32,25 @@ function setup() {
             },
         }
     }
-
-    settings.callbacks.nodeConstructions.bind(settings);
     
     let b = new Byakugan(settings);
-    let res = b.search();
-    console.log('res', res)
-    // let nodeA = res[0].ends
+    let res = b.search(0,1,3,3);
+    let res2 = b.search(0,1,5,2);
 
-    // let current = nodeA[0];
-    // // TODO : Error in the first goal at 3,3
-    // let i = 0
-    // while(current.previous) {
-    //     fill(255,0,0);
-    //     textAlign(CENTER, CENTER);
-    //     text(i, current.col * width + width / 2, current.row * height + height/2);
-    //     fill(`rgba(0, 255, 0, 0.25)`);
-    //     rect(current.col * width, current.row * height, width, height)
-    //     current = current.previous;
-    //     i++
-    // }
-    // nodeA.forEach(result => {
-    //     let current = result;
-    //     let random = Math.floor(Math.random() * Math.floor(255));
-    //     console.log('a')
-    //     let i = 0;
-    //     while(current.previous) {
-    //         fill(255,0,0);
-    //         textAlign(CENTER, CENTER);
-    //         // text(i, current.col * width + width / 2, current.row * height + height/2);
-    //         fill(`rgba(0, 255, 0, 0.25)`);
-    //         rect(current.col * width, current.row * height, width, height)
-    //         current = current.previous;
-    //         i++;
-    //     }
-    // });
+    res.forEach(node => {
+        const [row,col] = node;
+        console.log('drawing', col, row)
+        fill(`rgba(0, 255, 0, 0.25)`);
+        rect(col * width, row * height, width, height)
+    })
+
+    res2.forEach(node => {
+        const [row,col] = node;
+        console.log('drawing', col, row)
+        fill(`rgba(255, 0, 0, 0.25)`);
+        rect(col * width, row * height, width, height)
+    })
+
 }
 
 

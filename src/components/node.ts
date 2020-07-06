@@ -8,9 +8,6 @@ export class Node {
     private grid      : Array<Array<Node>>;
     private diagonal  : boolean;
     private obstacle  : boolean;
-    private start     : boolean;
-    private goal      : boolean;
-    private end       : boolean;
     private neighbours: Array<Node>;
 
     public previous? : Node;
@@ -24,8 +21,6 @@ export class Node {
         grid      : Array<Array<Node>>,
         diagonal  : boolean,
         obstacle  : boolean,
-        start     : boolean,
-        goal      : boolean,
         callbacks?: Callbacks,
     ) {
         this.row        = row;
@@ -33,16 +28,11 @@ export class Node {
         this.grid       = grid;
         this.obstacle   = obstacle;
         this.diagonal   = diagonal;
-        this.start      = start;
-        this.goal       = goal;
         this.neighbours = [];
         this.previous   = null;
-        this.g          = 0;
-        this.h          = 0;
-        this.f          = 0;
+        this.g          = this.h = this.f = 0;
 
-        callbacks?.nodeConstructions(this);
-        // this.initScore();
+        callbacks?.nodeConstructions(this.get());
     }
 
     addDirection(directions): void {
@@ -81,27 +71,22 @@ export class Node {
 		this.addDirection(directions);
     }
 
+    reset(): void {
+        this.f = this.g = this.h = 0;
+        this.previous = null;
+    }
+
     updateScore(g: number, h: number): void {
         this.g = g
         this.h = h;
         this.f = g + h;
     }
 
-    getGScore(i: number): number {
-        if(!this.g[i]) {
-            this.g[i] = 0
-        }
-        return this.g[i];
-    }
-
-    getFScore(i: number): number {
-        if (!this.f[i]) {
-            this.f[i] = 0;
-        }
-        return this.f[i];
-    }
-
     isObstacle(): boolean {
         return this.obstacle;
+    }
+
+    get(): Object {
+        return { row: this.row, col: this.col, obstacle: this.obstacle }
     }
 }
