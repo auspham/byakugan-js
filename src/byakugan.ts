@@ -1,3 +1,10 @@
+/**
+ *  Byakugan-js
+ *  github.com/rockmanvnx6/byakugan
+ *  Licensed under the MIT license.
+ * 
+ *  Author: Ngoc Thang Pham (Austin) (@rockmanvnx6)
+ */
 import { Settings } from "./components/settings";
 import { Node } from "./components/node";
 import { DefaultSettings } from "./interfaces/default-settings.interface";
@@ -12,8 +19,15 @@ export default class Byakugan {
         this.constructNode(settings.grid);
     }
 
+    /**
+     * Construct a grid of nodes based on the 2D array 
+     * passed from settings and then add neighbours for each node.
+     *
+     * @param {Array<Array<number>>} grid
+     * @memberof Byakugan
+     */
     constructNode(grid: Array<Array<number>>): void {
-
+        
         for (let row: number = 0; row < grid.length; row++) {
             let _: Array<Node> = [];
 
@@ -42,10 +56,24 @@ export default class Byakugan {
 
     }
 
+    /**
+     * Calculate the distance between 2 nodes based on theirs positions
+     * on the grid.
+     *
+     * @param {Node} a
+     * @param {Node} b
+     * @returns {number}
+     * @memberof Byakugan
+     */
     distance(a: Node, b: Node): number {
         return Math.hypot(a.row - b.row, a.col - b.col);
     }
 
+    /**
+     * Reset the node values for each node in the grid.
+     *
+     * @memberof Byakugan
+     */
     resetGrid(): void {
         for (let row: number = 0; row < this.grid.length; row++) {
             for (let col: number = 0; col < this.grid[0].length; col++) {
@@ -54,12 +82,28 @@ export default class Byakugan {
         }
     }
 
-    checkGoal(node, row, col): boolean {
+    /**
+     * Check if a node is goal based on its position.
+     *
+     * @param {Node} node
+     * @param {Node} end
+     * @returns {boolean}
+     * @memberof Byakugan
+     */
+    checkGoal(node: Node, end: Node): boolean {
         if (node) {
-            return node.col == col && node.row == row;
+            return node.col == end.col && node.row == end.row;
         }
     }
 
+    /**
+     * Trace back and return a 2D array consisting of 
+     * the nodes' coordinations.
+     *
+     * @param {Node} end
+     * @returns {Array<Array<number>>}
+     * @memberof Byakugan
+     */
     getResult(end: Node): Array<Array<number>> {
         let result: Array<Array<number>> = [];
         let current = end;
@@ -70,6 +114,17 @@ export default class Byakugan {
         return result;
     }
 
+    /**
+     * Implementation of A* algorithm. Following the pseudo code
+     * from https://en.wikipedia.org/wiki/A*_search_algorithm
+     *
+     * @param {*} x1
+     * @param {*} y1
+     * @param {*} x2
+     * @param {*} y2
+     * @returns {Array<Array<number>>}
+     * @memberof Byakugan
+     */
     search(x1, y1, x2, y2): Array<Array<number>> {
         this.resetGrid();
 
@@ -87,8 +142,7 @@ export default class Byakugan {
                 }
             }
             
-            if (this.checkGoal(current, x2, y2)) {
-                console.log("Done")
+            if (this.checkGoal(current, end)) {
                 return this.getResult(current);
             }
 

@@ -14,6 +14,7 @@ function setup() {
             [3, 0, 0, 1],
           
         ],
+        obstacle: 1,
         diagonal: false,
         callbacks: {
             nodeConstructions: function (node) {
