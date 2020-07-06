@@ -20,11 +20,7 @@ export class Node {
     public g         : number;
     public h         : number;
     public f         : number;
-    
-    /**
-     *Creates an instance of Node.
 
-     */
     constructor(
         row       : number,
         col       : number,
