@@ -9,13 +9,13 @@ function setup() {
             [1, 3, 0, 0],
             [1, 0, 0, 0],
             [0, 0, 0, 0],
-            [0, 1, 0, 3],
+            [0, 1, 0, 0],
             [0, 1, 1, 1],
             [3, 0, 0, 1],
           
         ],
         obstacles: [1,3],
-        diagonal: true,
+        diagonal: false,
         callbacks: {
             nodeConstructions: function (node) {
                 console.log(node);
@@ -37,6 +37,7 @@ function setup() {
     let b = new Byakugan(settings);
     let res = b.search(0,1,3,3);
     let res2 = b.search(0,1,5,2);
+    console.log(res);
 
     res.forEach(node => {
         const [row,col] = node;
