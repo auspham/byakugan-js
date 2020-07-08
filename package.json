@@ -6,7 +6,7 @@
     "types": "build/index.d.ts",
     "scripts": {
         "dev": "watch 'npm run build' src",
-        "build": "tsc && browserify build/index.js -s Byakugan | uglifyjs > dist/byakugan.min.js",
+        "build": "tsc && browserify build/index.js -s Byakugan > dist/byakugan.js && uglifyjs dist/byakugan.js -o dist/byakugan.min.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {

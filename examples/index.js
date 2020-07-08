@@ -1,6 +1,15 @@
 let width = 800;
 let height = 290;
 
+let currentPosition = {
+    row: 7,
+    col: 23,
+}
+
+let selectedPosition = null;
+let byakugan;
+let path = [];
+
 let background = [
     [197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 709, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730],
     [197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 729, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730],
@@ -47,7 +56,7 @@ let layer1 = [
 ]
 
 let grid = [
-    [1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0],
+    [1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0],
     [1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
     [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -100,6 +109,7 @@ let sketch = function (p) {
   
     p.setup = function() {
         p.createCanvas(width, height);
+        p.frameRate(20);
     }
     
     p.draw = function() {
@@ -109,13 +119,22 @@ let sketch = function (p) {
             obstacles: [1],
             callbacks: {
                 nodeConstructions: function(node) {
+                    let x = node.col * (bSize - 1);
+                    let y = node.row * (bSizeH - 1);
+
+                    if((p.mouseX > x && p.mouseX < x + bSize) && (p.mouseY > y && p.mouseY < y + bSizeH)) {
+                        p.fill(`rgba(0,255,0, 0.4)`);
+                        p.noStroke();
+                        selectedPosition = Object.assign(node);
+                    }
                     if (node.obstacle) {
-                        p.fill(`rgba(255,0,0,0.5)`);
+                        p.fill(`rgba(255,0,0,0.4)`);
                     } else {
                         p.noFill();
                     }
+                    p.strokeWeight(1);
                     p.stroke(50);
-                    p.rect(node.col * (bSize - 1), node.row * (bSizeH - 1), bSize, bSizeH);
+                    p.rect(x,y, bSize, bSizeH);
                 }
             }
         }
@@ -124,11 +143,36 @@ let sketch = function (p) {
         render(layer0);
         render(layer1);
 
-        let b = new Byakugan(settings);
+        byakugan = new Byakugan(settings);
+        p.image(player, currentPosition.col * (bSize - 1.5), currentPosition.row * (bSizeH-3.6), 48, 48, 0, 0, 48, 48)
+        path.forEach(node => {
+            const [row,col] = node;
+            p.fill(`rgba(0, 255, 255, .5)`);
+            p.rect(col * (bSize - 1), row * (bSizeH - 1), bSize, bSizeH)
+            
+        });
+
+        if(path.length > 0) {
+            let move = path.shift();
+            const [row, col] = move;
+            currentPosition.col = col;
+            currentPosition.row = row;   
+        }
+       
+    }
+
+    p.mouseClicked = function () {
+        if(selectedPosition && !selectedPosition.obstacle) {
+            path = byakugan.search(currentPosition.row, currentPosition.col, selectedPosition.row, selectedPosition.col);
+            console.log('path', selectedPosition);
+        } else {
+            path = [];
+        }
     }
 
     p.preload = function () {
         img = p.loadImage('./assets/tiles.png');
+        player = p.loadImage('./assets/guard.png');
     }
 
     p.windowResized = function () {
