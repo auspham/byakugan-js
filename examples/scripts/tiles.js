@@ -12,7 +12,7 @@ function setup() {
         for(let j = 0; j < col; j++) {
             stroke(0);
             noFill();
-            // rect(j * bsize, i * bsize, bsize, bsize);
+            rect(j * bsize, i * bsize, bsize, bsize);
             fill(0,255,0);
             textAlign(CENTER, CENTER);
             textSize(6);
