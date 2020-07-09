@@ -11,6 +11,7 @@ let byakugan;
 let path = [];
 let movePath = [];
 let eclipseSize = 500;
+let goalPosition = null;
 
 let background = [
     [197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 709, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730],
@@ -75,6 +76,10 @@ let grid = [
 let bSize = width / (grid[0].length);
 let bSizeH = height / grid.length;
 
+let dom = document.querySelector("#byakugan");
+let effect = document.querySelector(".effect");
+let selected = false;
+
 let sketch = function (p) {
     let img;
 
@@ -128,7 +133,7 @@ let sketch = function (p) {
                         selectedPosition = Object.assign(node);
                     }
                     if (node.obstacle) {
-                        p.fill(`rgba(255,0,0,0.4)`);
+                        p.fill(`rgba(255,0,0,0)`);
                     } else {
                         p.noFill();
                     }
@@ -145,8 +150,9 @@ let sketch = function (p) {
 
         byakugan = new Byakugan(settings);
         let pWidth = 2.4 * bSize;
-        let pHeight =  3 * bSizeH
-        p.image(player, currentPosition.col * (bSize) - pWidth / 3, currentPosition.row * (bSizeH) - pHeight / 1.5, pWidth, pHeight, 0, 0, 72, 72);
+        let pHeight =  3 * bSizeH;
+        let random =  Math.floor(Math.random() * Math.floor(2));
+        p.image(player, currentPosition.col * (bSize) - pWidth / 3, currentPosition.row * (bSizeH) - pHeight / 1.5, pWidth, pHeight, random * 72, 0, 72, 72);
 
         movePath.forEach(node => {
             const [row,col] = node;
@@ -155,6 +161,7 @@ let sketch = function (p) {
         });
 
         if(path.length > 0) {
+
             let move = path.shift();
             const [row, col] = move;
             movePath.push(move);
@@ -162,6 +169,7 @@ let sketch = function (p) {
             p.rect(col * (bSize), row * (bSizeH), bSize, bSizeH)
            
         } else {
+            dom.classList.remove('active');
             if(movePath.length > 0) {
                 let move = movePath.shift();
                 const [row, col] = move;
@@ -175,17 +183,36 @@ let sketch = function (p) {
         p.noFill();
         p.strokeWeight(5)
         p.ellipse(currentPosition.col * (bSize) + eclipseSize/10, currentPosition.row * (bSizeH) - eclipseSize/10, eclipseSize);
-       
+        if(selectedPosition && !selectedPosition.obstacle) {
+          
+            p.rect(selectedPosition.col * (bSize), selectedPosition.row * (bSizeH), bSize, bSizeH)
+        };
+        if(goalPosition) {
+            p.stroke(0,255,0);
+            p.rect(goalPosition.col * (bSize), goalPosition.row * (bSizeH), bSize, bSizeH)
+        }
+
     }
 
     p.mouseClicked = function () {
         if(selectedPosition && !selectedPosition.obstacle) {
-            movePath = [];
-            path = byakugan.search(currentPosition.row, currentPosition.col, selectedPosition.row, selectedPosition.col);
-            eclipseSize = 500;
-            console.log('path', selectedPosition);
+            selected = true;
+            goalPosition = selectedPosition;
+            // document.querySelector(".effect-img").setAttribute("src", "./assets/byakugan.webp")
+            // effect.style.display = 'block';
+            // setTimeout(function () {
+            //     movePath = [];
+            //     path = byakugan.search(currentPosition.row, currentPosition.col, selectedPosition.row, selectedPosition.col);
+            //     eclipseSize = 500;
+            //     dom.classList.add('active');
+            //     effect.style.display = 'none';
+            //     document.querySelector(".effect-img").setAttribute("src", "")
+
+            // }, 2700)
+
         } else {
             path = [];
+            selected = false;
         }
     }
 
