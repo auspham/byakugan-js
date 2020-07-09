@@ -9,6 +9,8 @@ let currentPosition = {
 let selectedPosition = null;
 let byakugan;
 let path = [];
+let movePath = [];
+let eclipseSize = 500;
 
 let background = [
     [197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 709, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730],
@@ -91,7 +93,6 @@ let sketch = function (p) {
     let drawTile = function (val, i, j) {
         let size = 16;
         let col = img.width / size;
-    
         p.image(
             img,
             (bSize) * j,
@@ -127,7 +128,7 @@ let sketch = function (p) {
                         selectedPosition = Object.assign(node);
                     }
                     if (node.obstacle) {
-                        p.fill(`rgba(255,0,0,0)`);
+                        p.fill(`rgba(255,0,0,0.4)`);
                     } else {
                         p.noFill();
                     }
@@ -147,25 +148,41 @@ let sketch = function (p) {
         let pHeight =  3 * bSizeH
         p.image(player, currentPosition.col * (bSize) - pWidth / 3, currentPosition.row * (bSizeH) - pHeight / 1.5, pWidth, pHeight, 0, 0, 72, 72);
 
-        path.forEach(node => {
+        movePath.forEach(node => {
             const [row,col] = node;
             p.fill(`rgba(0, 255, 255, .5)`);
             p.rect(col * (bSize), row * (bSizeH), bSize, bSizeH)
-            
         });
 
         if(path.length > 0) {
             let move = path.shift();
             const [row, col] = move;
-            currentPosition.col = col;
-            currentPosition.row = row;   
+            movePath.push(move);
+            p.fill(`rgba(0, 255, 255, .5)`);
+            p.rect(col * (bSize), row * (bSizeH), bSize, bSizeH)
+           
+        } else {
+            if(movePath.length > 0) {
+                let move = movePath.shift();
+                const [row, col] = move;
+                currentPosition.col = col;
+                currentPosition.row = row;   
+            }
         }
+        if(eclipseSize > 0) {
+            eclipseSize-=100;
+        }
+        p.noFill();
+        p.strokeWeight(5)
+        p.ellipse(currentPosition.col * (bSize) + eclipseSize/10, currentPosition.row * (bSizeH) - eclipseSize/10, eclipseSize);
        
     }
 
     p.mouseClicked = function () {
         if(selectedPosition && !selectedPosition.obstacle) {
+            movePath = [];
             path = byakugan.search(currentPosition.row, currentPosition.col, selectedPosition.row, selectedPosition.col);
+            eclipseSize = 500;
             console.log('path', selectedPosition);
         } else {
             path = [];
