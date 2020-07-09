@@ -198,22 +198,26 @@ let sketch = function (p) {
         if(selectedPosition && !selectedPosition.obstacle) {
             selected = true;
             goalPosition = selectedPosition;
-            // document.querySelector(".effect-img").setAttribute("src", "./assets/byakugan.webp")
-            // effect.style.display = 'block';
-            // setTimeout(function () {
-            //     movePath = [];
-            //     path = byakugan.search(currentPosition.row, currentPosition.col, selectedPosition.row, selectedPosition.col);
-            //     eclipseSize = 500;
-            //     dom.classList.add('active');
-            //     effect.style.display = 'none';
-            //     document.querySelector(".effect-img").setAttribute("src", "")
-
-            // }, 2700)
+         
 
         } else {
             path = [];
             selected = false;
         }
+    }
+
+    let start = function () {
+        document.querySelector(".effect-img").setAttribute("src", "./assets/byakugan.webp")
+        effect.style.display = 'block';
+        setTimeout(function () {
+            movePath = [];
+            path = byakugan.search(currentPosition.row, currentPosition.col, goalPosition.row, goalPosition.col);
+            eclipseSize = 500;
+            dom.classList.add('active');
+            effect.style.display = 'none';
+            document.querySelector(".effect-img").setAttribute("src", "")
+
+        }, 2700)
     }
 
     p.preload = function () {
@@ -228,6 +232,9 @@ let sketch = function (p) {
         bSizeH = height / grid.length;
         p.resizeCanvas(width, height);
     }
+
+    let btn = document.querySelector('button');
+    btn.addEventListener('click', start, false)
 
 }
 
