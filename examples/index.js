@@ -94,12 +94,12 @@ let sketch = function (p) {
     
         p.image(
             img,
-            (bSize - 1) * j,
-            (bSizeH - 1) * i,
+            (bSize) * j,
+            (bSizeH) * i,
             bSize,
             bSizeH,
             size * (val % col),
-            size * (Math.floor(val / col)) + 0.5,
+            size * (Math.floor(val / col)),
             size,
             size
         );
@@ -118,8 +118,8 @@ let sketch = function (p) {
             obstacles: [1],
             callbacks: {
                 nodeConstructions: function(node) {
-                    let x = node.col * (bSize - 1);
-                    let y = node.row * (bSizeH - 1);
+                    let x = node.col * (bSize);
+                    let y = node.row * (bSizeH);
 
                     if((p.mouseX > x && p.mouseX < x + bSize) && (p.mouseY > y && p.mouseY < y + bSizeH)) {
                         p.fill(`rgba(0,255,0, 0.4)`);
@@ -145,12 +145,12 @@ let sketch = function (p) {
         byakugan = new Byakugan(settings);
         let pWidth = 2.4 * bSize;
         let pHeight =  3 * bSizeH
-        p.image(player, currentPosition.col * (bSize) - pWidth / 2.5, currentPosition.row * (bSizeH) - pHeight / 1.5, pWidth, pHeight, 0, 0, 72, 72);
+        p.image(player, currentPosition.col * (bSize) - pWidth / 3, currentPosition.row * (bSizeH) - pHeight / 1.5, pWidth, pHeight, 0, 0, 72, 72);
 
         path.forEach(node => {
             const [row,col] = node;
             p.fill(`rgba(0, 255, 255, .5)`);
-            p.rect(col * (bSize - 1), row * (bSizeH - 1), bSize, bSizeH)
+            p.rect(col * (bSize), row * (bSizeH), bSize, bSizeH)
             
         });
 
