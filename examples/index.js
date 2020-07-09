@@ -1,5 +1,5 @@
-let width = 800;
-let height = 290;
+let width = window.innerWidth;
+let height = 36.25 * width / 100;
 
 let currentPosition = {
     row: 7,
@@ -70,7 +70,6 @@ let grid = [
     [1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1],
 ]
 
-
 let bSize = width / (grid[0].length);
 let bSizeH = height / grid.length;
 
@@ -128,7 +127,7 @@ let sketch = function (p) {
                         selectedPosition = Object.assign(node);
                     }
                     if (node.obstacle) {
-                        p.fill(`rgba(255,0,0,0.4)`);
+                        p.fill(`rgba(255,0,0,0)`);
                     } else {
                         p.noFill();
                     }
@@ -144,7 +143,10 @@ let sketch = function (p) {
         render(layer1);
 
         byakugan = new Byakugan(settings);
-        p.image(player, currentPosition.col * (bSize - 1.5), currentPosition.row * (bSizeH-3.6), 48, 48, 0, 0, 48, 48)
+        let pWidth = 2.4 * bSize;
+        let pHeight =  3 * bSizeH
+        p.image(player, currentPosition.col * (bSize) - pWidth / 2.5, currentPosition.row * (bSizeH) - pHeight / 1.5, pWidth, pHeight, 0, 0, 72, 72);
+
         path.forEach(node => {
             const [row,col] = node;
             p.fill(`rgba(0, 255, 255, .5)`);
@@ -172,10 +174,14 @@ let sketch = function (p) {
 
     p.preload = function () {
         img = p.loadImage('./assets/tiles.png');
-        player = p.loadImage('./assets/guard.png');
+        player = p.loadImage('./assets/coder.png');
     }
 
     p.windowResized = function () {
+        let width = window.innerWidth;
+        let height = 36.25 * width / 100;
+        bSize = width / (grid[0].length);
+        bSizeH = height / grid.length;
         p.resizeCanvas(width, height);
     }
 
