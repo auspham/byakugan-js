@@ -38,7 +38,7 @@
             }
         };
         Byakugan.prototype.distance = function (a, b) {
-            return Math.hypot(a.row - b.row, a.col - b.col);
+            return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
         };
         Byakugan.prototype.resetGrid = function () {
             for (var row = 0; row < this.grid.length; row++) {
@@ -69,9 +69,9 @@
             var closeSet = [];
             while (openSet.length > 0) {
                 var current = null;
-                for (var j = 0; j < openSet.length; j++) {
-                    if (!current || openSet[j].f < current.f) {
-                        current = openSet[j];
+                for (var i = 0; i < openSet.length; i++) {
+                    if (!current || openSet[i].f < current.f) {
+                        current = openSet[i];
                     }
                 }
                 if (this.checkGoal(current, end)) {
@@ -80,17 +80,16 @@
                 var _remove = openSet.indexOf(current);
                 var remove = openSet.splice(_remove, 1)[0];
                 closeSet.push(remove);
-                for (var j = 0; j < current.neighbours.length; j++) {
-                    var neighbour = current.neighbours[j];
-                    var tempG = current.g + this.distance(current, neighbour);
-                    if (neighbour.isObstacle() || closeSet.includes(neighbour)) {
-                        continue;
-                    }
-                    if (tempG > neighbour.g) {
-                        neighbour.updateScore(tempG, this.distance(neighbour, end));
-                        neighbour.previous = current;
+                for (var i = 0; i < current.neighbours.length; i++) {
+                    var neighbour = current.neighbours[i];
+                    if (neighbour.isObstacle() || !closeSet.includes(neighbour)) {
+                        var tempG = current.g + this.distance(current, neighbour);
                         if (!openSet.includes(neighbour)) {
                             openSet.push(neighbour);
+                        }
+                        if (tempG > neighbour.g) {
+                            neighbour.updateScore(tempG, this.distance(neighbour, end));
+                            neighbour.previous = current;
                         }
                     }
                 }

@@ -51,6 +51,7 @@ label {
     display: flex;
     align-items: center;
     margin-bottom: 0!important;
+    user-select: none;
 }
 .content {
     position: relative;

@@ -127,6 +127,7 @@ let sketch = function (p) {
         let settings = {
             grid: grid,
             obstacles: [1],
+            diagonal: check.diagonal,
             callbacks: {
                 nodeConstructions: function(node) {
                     let x = node.col * (bSize);
@@ -162,8 +163,9 @@ let sketch = function (p) {
         let pHeight =  3 * bSizeH;
         let random =  Math.floor(Math.random() * Math.floor(2));
 
+        p.fill(0,0,255);
+        p.rect(currentPosition.col * (bSize), currentPosition.row * (bSizeH), bSize, bSizeH);
         p.image(player, currentPosition.col * (bSize) - pWidth / 3, currentPosition.row * (bSizeH) - pHeight / 1.5, pWidth, pHeight, random * 72, 0, 72, 72);
-
         
         movePath.forEach(node => {
             const [row,col] = node;
