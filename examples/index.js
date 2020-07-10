@@ -13,6 +13,13 @@ let movePath = [];
 let eclipseSize = 500;
 let goalPosition = null;
 
+let check = {
+    diagonal: true,
+    animation: true,
+    move: true,
+    hideObstacles: true
+}
+
 let background = [
     [197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 709, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730],
     [197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 197, 729, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730, 730],
@@ -89,8 +96,6 @@ let sketch = function (p) {
                 let val = grid[i][j];
                 drawTile(val, i, j);
                 p.stroke(50);
-                // p.noFill();
-                // p.rect(j * (bSize-1), i * (bSizeH-1), bSize, bSizeH);
             }
         }
     }
@@ -133,7 +138,11 @@ let sketch = function (p) {
                         selectedPosition = Object.assign(node);
                     }
                     if (node.obstacle) {
-                        p.fill(`rgba(255,0,0,0)`);
+                        let alpha = 0.4;
+                        if(check.hideObstacles) {
+                            alpha = 0
+                        }
+                        p.fill(`rgba(255,0,0, ${alpha})`);
                     } else {
                         p.noFill();
                     }
@@ -152,37 +161,39 @@ let sketch = function (p) {
         let pWidth = 2.4 * bSize;
         let pHeight =  3 * bSizeH;
         let random =  Math.floor(Math.random() * Math.floor(2));
+
         p.image(player, currentPosition.col * (bSize) - pWidth / 3, currentPosition.row * (bSizeH) - pHeight / 1.5, pWidth, pHeight, random * 72, 0, 72, 72);
 
+        
         movePath.forEach(node => {
             const [row,col] = node;
             p.fill(`rgba(0, 255, 255, .5)`);
             p.rect(col * (bSize), row * (bSizeH), bSize, bSizeH)
         });
-
         if(path.length > 0) {
-
             let move = path.shift();
             const [row, col] = move;
             movePath.push(move);
             p.fill(`rgba(0, 255, 255, .5)`);
             p.rect(col * (bSize), row * (bSizeH), bSize, bSizeH)
-           
         } else {
             dom.classList.remove('active');
-            if(movePath.length > 0) {
+            if(check.move && movePath.length > 0) {
                 let move = movePath.shift();
                 const [row, col] = move;
                 currentPosition.col = col;
                 currentPosition.row = row;   
             }
         }
+        p.strokeWeight(5)
+        p.noFill();
         if(eclipseSize > 0) {
             eclipseSize-=100;
         }
-        p.noFill();
-        p.strokeWeight(5)
-        p.ellipse(currentPosition.col * (bSize) + eclipseSize/10, currentPosition.row * (bSizeH) - eclipseSize/10, eclipseSize);
+        if(check.animation) {
+ 
+            p.ellipse(currentPosition.col * (bSize) + eclipseSize/10, currentPosition.row * (bSizeH) - eclipseSize/10, eclipseSize);
+        }
         if(selectedPosition && !selectedPosition.obstacle) {
           
             p.rect(selectedPosition.col * (bSize), selectedPosition.row * (bSizeH), bSize, bSizeH)
@@ -195,11 +206,9 @@ let sketch = function (p) {
     }
 
     p.mouseClicked = function () {
-        if(selectedPosition && !selectedPosition.obstacle) {
+        if(selectedPosition && !selectedPosition.obstacle && p.mouseY < height) {
             selected = true;
             goalPosition = selectedPosition;
-         
-
         } else {
             path = [];
             selected = false;
@@ -207,17 +216,24 @@ let sketch = function (p) {
     }
 
     let start = function () {
-        document.querySelector(".effect-img").setAttribute("src", "./assets/byakugan.webp")
-        effect.style.display = 'block';
+        let time = 0;
+        if(check.animation) {
+            document.querySelector(".effect-img").setAttribute("src", "./assets/byakugan.webp")
+            effect.style.display = 'block';
+            time = 2700;
+        }
         setTimeout(function () {
             movePath = [];
             path = byakugan.search(currentPosition.row, currentPosition.col, goalPosition.row, goalPosition.col);
             eclipseSize = 500;
-            dom.classList.add('active');
+            if(check.animation) {
+                dom.classList.add('active');
+            }
             effect.style.display = 'none';
             document.querySelector(".effect-img").setAttribute("src", "")
 
-        }, 2700)
+        }, time)     
+       
     }
 
     p.preload = function () {
@@ -240,58 +256,19 @@ let sketch = function (p) {
 
 new p5(sketch, 'byakugan');
 
-// function setup() {
-//     const w = h = 500;
-//     let width = 30;
-//     let height = 30;
-//     createCanvas(w,h);
-//     let settings = {
-//         grid: [
-//             [1, 3, 0, 0],
-//             [1, 0, 0, 0],
-//             [0, 0, 0, 0],
-//             [0, 1, 0, 0],
-//             [0, 1, 1, 1],
-//             [3, 0, 0, 1],
-          
-//         ],
-//         obstacles: [1,3],
-//         diagonal: false,
-//         callbacks: {
-//             nodeConstructions: function (node) {
-//                 console.log(node);
-//                 if (node.obstacle) {
-//                     fill(0);
-//                 } else if (node.start) {
-//                     fill(0, 0, 255);
-//                 } else if (node.goal) {
-//                     fill(0, 255, 0);
-//                 } else {
-//                     noFill();
-//                 }
-        
-//                 rect(node.col * width, node.row * height, width, height);
-//             },
-//         }
-//     }
-    
-//     let b = new Byakugan(settings);
-//     let res = b.search(0,1,3,3);
-//     let res2 = b.search(0,1,5,2);
-//     console.log(res);
 
-//     res.forEach(node => {
-//         const [row,col] = node;
-//         fill(`rgba(0, 255, 0, 0.25)`);
-//         rect(col * width, row * height, width, height)
-//     })
+let checkbtn = {
+    diagonal: document.getElementById("check-diagonal"),
+    animation: document.getElementById("check-animation"),
+    move: document.getElementById("check-move"),
+    hideObstacles: document.getElementById("check-obstacles"),
+}
 
-//     res2.forEach(node => {
-//         const [row,col] = node;
-//         fill(`rgba(255, 0, 0, 0.25)`);
-//         rect(col * width, row * height, width, height)
-//     })
-
-// }
-
+for (let key in checkbtn) {
+    if (checkbtn.hasOwnProperty(key)) {
+        checkbtn[key].addEventListener("click", () => {
+            check[key] = !check[key]
+        }, false)
+    }
+}
 
