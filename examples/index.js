@@ -252,8 +252,8 @@ let sketch = function (p) {
     }
 
     p.windowResized = function () {
-        let width = window.innerWidth;
-        let height = 36.25 * width / 100;
+        width = window.innerWidth;
+        height = 36.25 * width / 100;
         bSize = width / (grid[0].length);
         bSizeH = height / grid.length;
         p.resizeCanvas(width, height);
