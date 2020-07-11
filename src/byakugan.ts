@@ -7,13 +7,13 @@
  */
 import { Settings } from "./components/settings";
 import { Node } from "./components/node";
-import { DefaultSettings } from "./interfaces/default-settings.interface";
+import { SettingsInterface } from "./interfaces/settings.interface";
 
 export default class Byakugan {
     private settings: Settings;
     private grid: Array<Array<Node>>;
 
-    constructor(settings: DefaultSettings) {
+    constructor(settings: SettingsInterface) {
         this.settings = new Settings(settings);
         this.grid = [];
         this.constructNode(settings.grid);
@@ -70,8 +70,15 @@ export default class Byakugan {
      * @memberof Byakugan
      */
     private distance(a: Node, b: Node): number {
-        return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
-        // return Math.hypot(a.row - b.row, a.col - b.col);
+        let { diagonal, heuristics } = this.settings;
+        try {
+            if (diagonal) {
+                return heuristics.diagonal(a, b);
+            }
+            return heuristics.normal(a, b);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     /**
@@ -171,13 +178,12 @@ export default class Byakugan {
                     let tempG: number =
                         current.g + this.distance(current, neighbour);                    
                     
-                    if (!openSet.includes(neighbour)) {
-                        openSet.push(neighbour);
-                    }
-                    
-                    if (tempG > neighbour.g) {
+                    if (!openSet.includes(neighbour) || tempG < neighbour.g) {
                         neighbour.updateScore(tempG, this.distance(neighbour, end));
                         neighbour.previous = current;
+                        if (!openSet.includes(neighbour)) {
+                            openSet.push(neighbour);
+                        }
                     }
                 }
             }

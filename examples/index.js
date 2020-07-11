@@ -128,6 +128,9 @@ let sketch = function (p) {
             grid: grid,
             obstacles: [1],
             diagonal: check.diagonal,
+            heuristics: {
+                normal: "euclidean"
+            },
             callbacks: {
                 nodeConstructions: function(node) {
                     let x = node.col * (bSize);
@@ -163,7 +166,7 @@ let sketch = function (p) {
         let pHeight =  3 * bSizeH;
         let random =  Math.floor(Math.random() * Math.floor(2));
 
-        p.fill(0,0,255);
+        p.fill(255,255,0);
         p.rect(currentPosition.col * (bSize), currentPosition.row * (bSizeH), bSize, bSizeH);
         p.image(player, currentPosition.col * (bSize) - pWidth / 3, currentPosition.row * (bSizeH) - pHeight / 1.5, pWidth, pHeight, random * 72, 0, 72, 72);
         

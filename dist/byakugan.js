@@ -38,7 +38,16 @@
             }
         };
         Byakugan.prototype.distance = function (a, b) {
-            return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
+            var _a = this.settings, diagonal = _a.diagonal, heuristics = _a.heuristics;
+            try {
+                if (diagonal) {
+                    return heuristics.diagonal(a, b);
+                }
+                return heuristics.normal(a, b);
+            }
+            catch (error) {
+                console.error(error);
+            }
         };
         Byakugan.prototype.resetGrid = function () {
             for (var row = 0; row < this.grid.length; row++) {
@@ -84,12 +93,12 @@
                     var neighbour = current.neighbours[i];
                     if (neighbour.isObstacle() || !closeSet.includes(neighbour)) {
                         var tempG = current.g + this.distance(current, neighbour);
-                        if (!openSet.includes(neighbour)) {
-                            openSet.push(neighbour);
-                        }
-                        if (tempG > neighbour.g) {
+                        if (!openSet.includes(neighbour) || tempG < neighbour.g) {
                             neighbour.updateScore(tempG, this.distance(neighbour, end));
                             neighbour.previous = current;
+                            if (!openSet.includes(neighbour)) {
+                                openSet.push(neighbour);
+                            }
                         }
                     }
                 }
@@ -101,7 +110,129 @@
     exports.default = Byakugan;
 });
 
-},{"./components/node":2,"./components/settings":3}],2:[function(require,module,exports){
+},{"./components/node":4,"./components/settings":5}],2:[function(require,module,exports){
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports"], factory);
+    }
+})(function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.ErrorMessage = void 0;
+    var ErrorMessage = (function (_super) {
+        __extends(ErrorMessage, _super);
+        function ErrorMessage() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        ErrorMessage.functions = function (name) {
+            var message = "Undefined heuristic functions '" + name + "' do you mean to use 'overwrites'?";
+            return new Error(message);
+        };
+        return ErrorMessage;
+    }(Error));
+    exports.ErrorMessage = ErrorMessage;
+});
+
+},{}],3:[function(require,module,exports){
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
+    }
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "./errors"], factory);
+    }
+})(function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Heuristics = void 0;
+    var errors_1 = require("./errors");
+    var DefaultFunctions;
+    (function (DefaultFunctions) {
+        DefaultFunctions["normal"] = "MANHATTAN";
+        DefaultFunctions["diagonal"] = "OCTILE";
+    })(DefaultFunctions || (DefaultFunctions = {}));
+    var Heuristics = (function () {
+        function Heuristics(heuristics) {
+            this.functions = {
+                EUCLIDEAN: function (a, b) {
+                    Math.hypot(a.row - b.row, a.col - b.col);
+                },
+                MANHATTAN: function (a, b) {
+                    var dx = Math.abs(a.col - b.col);
+                    var dy = Math.abs(a.row - b.row);
+                    return dx + dy;
+                },
+                OCTILE: function (a, b) {
+                    var dx = Math.abs(a.col - b.col);
+                    var dy = Math.abs(a.row - b.row);
+                    return (dx + dy) + (Math.sqrt(2) - 2) * Math.min(dx, dy);
+                }
+            };
+            this.normal = this.functions[DefaultFunctions.normal];
+            this.diagonal = this.functions[DefaultFunctions.diagonal];
+            if (heuristics) {
+                if (heuristics.overwrite) {
+                    this.setOverwrite(heuristics.overwrite);
+                }
+                else {
+                    this.setFunctions(heuristics);
+                }
+            }
+        }
+        Heuristics.prototype.setOverwrite = function (overwrite) {
+            var normal = overwrite.normal, diagonal = overwrite.diagonal;
+            if (normal) {
+                this.normal = normal;
+            }
+            if (diagonal) {
+                this.diagonal = diagonal;
+            }
+        };
+        Heuristics.prototype.setFunctions = function (heuristics) {
+            var normal = heuristics.normal, diagonal = heuristics.diagonal;
+            if (normal) {
+                normal = normal.toUpperCase();
+                if (this.functions.hasOwnProperty(normal)) {
+                    this.normal = this.functions[normal];
+                }
+                else {
+                    throw errors_1.ErrorMessage.functions(normal);
+                }
+            }
+            if (diagonal) {
+                diagonal = diagonal.toUpperCase();
+                if (this.functions.hasOwnProperty(diagonal)) {
+                    this.diagonal = this.functions[diagonal];
+                }
+                else {
+                    throw errors_1.ErrorMessage.functions(diagonal);
+                }
+            }
+        };
+        return Heuristics;
+    }());
+    exports.Heuristics = Heuristics;
+});
+
+},{"./errors":2}],4:[function(require,module,exports){
 (function (factory) {
     if (typeof module === "object" && typeof module.exports === "object") {
         var v = factory(require, exports);
@@ -178,19 +309,20 @@
     exports.Node = Node;
 });
 
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 (function (factory) {
     if (typeof module === "object" && typeof module.exports === "object") {
         var v = factory(require, exports);
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports"], factory);
+        define(["require", "exports", "./heuristics"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Settings = void 0;
+    var heuristics_1 = require("./heuristics");
     var DefaultType;
     (function (DefaultType) {
         DefaultType[DefaultType["obstacle"] = 1] = "obstacle";
@@ -202,13 +334,17 @@
             this.diagonal = (_a = settings.diagonal) !== null && _a !== void 0 ? _a : false;
             this.obstacles = new Set(settings.obstacles || [DefaultType.obstacle]);
             this.callbacks = settings.callbacks;
+            this.setHeuristics(settings.heuristics);
         }
+        Settings.prototype.setHeuristics = function (heuristics) {
+            this.heuristics = new heuristics_1.Heuristics(heuristics);
+        };
         return Settings;
     }());
     exports.Settings = Settings;
 });
 
-},{}],4:[function(require,module,exports){
+},{"./heuristics":3}],6:[function(require,module,exports){
 (function (factory) {
     if (typeof module === "object" && typeof module.exports === "object") {
         var v = factory(require, exports);
@@ -223,5 +359,5 @@
     return byakugan_1.default;
 });
 
-},{"./byakugan":1}]},{},[4])(4)
+},{"./byakugan":1}]},{},[6])(6)
 });
