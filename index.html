@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Byakugan-js</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="./favicon_io/site.webmanifest">
+
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="./styles/prism.css"/>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="./styles/main.css"/>
+
+</head>
+<body>
+    <div id="byakugan">
+        <div class="effect">
+            <img src="" class="effect-img"/>
+        </div>
+    </div>
+    <div class="controls">
+        
+        <label>
+            <input type="checkbox" class="nes-checkbox is-dark" id="check-diagonal" checked />
+            <span>Diagonal</span>
+        </label>
+
+        <label>
+            <input type="checkbox" class="nes-checkbox is-dark" id="check-animation" checked />
+            <span>Animation</span>
+        </label>
+        <button type="button" class="nes-btn is-warning">Byakugan</button>
+
+        <label>
+            <input type="checkbox" class="nes-checkbox is-dark" id="check-move" checked />
+            <span>Move</span>
+        </label>
+
+        <label>
+            <input type="checkbox" class="nes-checkbox is-dark" id="check-obstacles" checked />
+            <span>Hide obstacles</span>
+        </label>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            <div class="level">
+                <div class="level-left">
+                    <div>
+                        <h1 class="title is-1 is-spaced">Byakugan-js</h1>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="field is-grouped is-grouped-multiline">
+                        <div class="control">
+                            <div class="tags has-addons">
+                            <span class="tag"><a href="https://github.com/rockmanvnx6/byakugan" class="has-text-black" target="_blank">View on Github</a></span>
+                            <span class="tag is-dark" id="version">  
+                                <i class="fab fa-github"></i>
+                            </span>
+                            </div>
+                        </div>
+                        <div class="control">
+                            <div class="tags has-addons">
+                            <span class="tag is-dark"><a href="https://www.npmjs.com/package/byakugan-js" class="has-text-white" target="_blank">npm</a></span>
+                            <span class="tag is-success" id="version">0.0.2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="max-width: 800px;">
+                <h2 class="subtitle is-5">
+                    Light-weight, array-based super simple <a href="https://en.wikipedia.org/wiki/A*_search_algorithm" target="_blank">A*</a> pathfinding algorithm package written in Typescript, complied to Javascript in ES 5 syntax.
+                </h2>
+                <h2 class="subtitle is-5">
+                    The name <a href="https://naruto.fandom.com/wiki/Byakugan">Byakugan</a> (白眼) was influenced by the manga series <a href="https://en.wikipedia.org/wiki/Naruto">Naruto</a>.
+                </h2>
+                <pre id="npm" class="intro-npm">
+                    <code>npm install --save byakugan-js</code>
+                    <code id="npmCopy" class="intro-npm-copy" data-clipboard-text="npm install --save byakugan-js">copy</code>
+                </pre>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <h2 class="title is-spaced"> Features </h2>
+            <p class="subtitle"> Byakugan-js main features</p>
+            <div class="content is-medium">
+                <ul>
+                    <li>Simple API.</li>
+                    <li>Written in object-oriented way make it easy to develop.</li>
+                    <li>Easy to use and customize.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="title is-spaced"> Quick start </h2>
+            <p class="subtitle"><b>Node.js</b></p>
+            <div class="content">
+                <p>Install the following dependency:</p>
+                <pre><code class="language-bash">npm install --save byakugan-js</code></pre>
+            </div>
+            <p class="subtitle"><b>Web</b></p>
+            <div class="content">
+                <p>Choose one of the following CDNs:</p>
+                <p>Minified build:</p>
+                <pre><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/gh/rockmanvnx6/byakugan-js/dist/byakugan.min.js"&gt;&lt;/script&gt;</code></pre>
+                <p>Development build</p>
+                <pre><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/gh/rockmanvnx6/byakugan-js/dist/byakugan.js"&gt;&lt;/script&gt;</code></pre>
+            </div>
+            <p class="subtitle"><b>Usage</b></p>
+            <pre>
+                <code class="language-javascript">const Byakugan = require('byakugan-js'); // ignore if using CDN
+let settings = {
+    grid: [
+        [1, 2, 0, 0],
+        [1, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 1, 0],
+        [1, 3, 0, 0],
+        
+    ],
+    all: true,
+    diagonal: false,
+}
+let b = new Byakugan(settings)
+let paths = b.search(0,1,3,3); // Find path from grid[0][1] to grid[3][3]</code>
+            </pre>
+            <pre>
+                <code class="language-javascript">console.log(paths) // [ [1,1], [2,1], [2,2], [3,2], [3,3] ]</code>
+            </pre>            
+        </div>
+
+    </section>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">APIs</h1>
+            <div class="content">
+                <p> For a full implementation and API usage, visit <a href="https://github.com/rockmanvnx6/byakugan" target="_blank">Github.</a> </p>
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="content has-text-centered is-small">
+          <p>
+            <strong>Byakugan-js</strong> by <a href="https://auspham.dev/" target="_blank">Thang Pham (Austin)</a>. The source code is licensed
+            <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. Sprites and images in the demo are from <a href="https://github.com/mozilla/BrowserQuest" target="_blank">BrowserQuest</a>.
+          </p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+    <script src="./scripts/prism.js"></script>
+
+    <script>
+        new ClipboardJS('#npmCopy');
+        let copy = document.getElementById('npmCopy');
+        copy.addEventListener('click', function() {
+            copy.innerHTML = "copied";
+            copy.classList.add("is-success");
+
+            setTimeout(function() {
+                copy.innerHTML = "copy";
+                copy.classList.remove("is-success");
+            }, 500)
+        }, false);
+    </script>
+    <script src="../dist/byakugan.js"></script>
+    <script src="./index.js"></script>
+</body>
+</html>
+
