@@ -2,7 +2,7 @@
 
 ## Description
 
-Byakugan-js is an array-based, super simple and lightweight implementation of [A*](https://en.wikipedia.org/wiki/A*_search_algorithm) path finding algorithm written in Typescript. 
+Byakugan-js is an array-based, super simple and lightweight implementation of [A*](https://en.wikipedia.org/wiki/A*_search_algorithm) pathfinding algorithm written in Typescript. 
 
 It's then compiled into JavaScript with ES 5 syntax.
 
@@ -10,7 +10,7 @@ The name [Byakugan](https://naruto.fandom.com/wiki/Byakugan) (白眼) was influe
 
 ## Installation:
 
-**Node**: `npm install byakugan-js`
+**Node**: `npm install --save byakugan-js`
 
 **Web**: Use packages inside `build/` or use one of the following CDNs:
 
@@ -19,12 +19,11 @@ Minified build:
 ```html
 <script src="https://cdn.jsdelivr.net/gh/rockmanvnx6/byakugan-js/dist/byakugan.min.js"></script>
 ```
-normal build
+
+Development build:
 ```html
 <script src="https://cdn.jsdelivr.net/gh/rockmanvnx6/byakugan-js/dist/byakugan.js"></script>
 ```
-
-
 
 ## Quick start
 
