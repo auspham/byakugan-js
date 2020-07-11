@@ -2,6 +2,7 @@ import { SettingsInterface } from "../interfaces/settings.interface";
 import { Callbacks } from "../interfaces/callbacks.interface";
 import { HeuristicsInterface } from "../interfaces/heuristics.interface";
 import { Heuristics } from "./heuristics";
+import { ErrorMessage } from "./errors";
 
 enum DefaultType {
     obstacle = 1,
@@ -22,6 +23,9 @@ export class Settings {
     public heuristics: Heuristics;
 
     constructor(settings: SettingsInterface) {
+        if(!settings.grid) {
+            throw ErrorMessage.invalidSettings();
+        }
         this.grid      = settings.grid;
         this.diagonal  = settings.diagonal ?? false;
         this.obstacles = new Set(settings.obstacles || [DefaultType.obstacle]);

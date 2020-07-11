@@ -14,9 +14,13 @@ export default class Byakugan {
     private grid: Array<Array<Node>>;
 
     constructor(settings: SettingsInterface) {
-        this.settings = new Settings(settings);
-        this.grid = [];
-        this.constructNode(settings.grid);
+        try {
+            this.settings = new Settings(settings);
+            this.grid = [];
+            this.constructNode(settings.grid);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     private isObstacle(val: number, obstacles: Set<number>): boolean {

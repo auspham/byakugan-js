@@ -14,9 +14,14 @@
     var node_1 = require("./components/node");
     var Byakugan = (function () {
         function Byakugan(settings) {
-            this.settings = new settings_1.Settings(settings);
-            this.grid = [];
-            this.constructNode(settings.grid);
+            try {
+                this.settings = new settings_1.Settings(settings);
+                this.grid = [];
+                this.constructNode(settings.grid);
+            }
+            catch (error) {
+                console.error(error);
+            }
         }
         Byakugan.prototype.isObstacle = function (val, obstacles) {
             return obstacles.has(val);
@@ -142,7 +147,11 @@ var __extends = (this && this.__extends) || (function () {
             return _super !== null && _super.apply(this, arguments) || this;
         }
         ErrorMessage.functions = function (name) {
-            var message = "Undefined heuristic functions '" + name + "' do you mean to use 'overwrites'?";
+            var message = "Undefined heuristic functions '" + name + "' do you mean to use 'override'?";
+            return new Error(message);
+        };
+        ErrorMessage.invalidSettings = function () {
+            var message = "Missing key 'grid' in settings object.";
             return new Error(message);
         };
         return ErrorMessage;
@@ -189,16 +198,16 @@ var __extends = (this && this.__extends) || (function () {
             this.normal = this.functions[DefaultFunctions.normal];
             this.diagonal = this.functions[DefaultFunctions.diagonal];
             if (heuristics) {
-                if (heuristics.overwrite) {
-                    this.setOverwrite(heuristics.overwrite);
+                if (heuristics.override) {
+                    this.setOverwrite(heuristics.override);
                 }
                 else {
                     this.setFunctions(heuristics);
                 }
             }
         }
-        Heuristics.prototype.setOverwrite = function (overwrite) {
-            var normal = overwrite.normal, diagonal = overwrite.diagonal;
+        Heuristics.prototype.setOverwrite = function (override) {
+            var normal = override.normal, diagonal = override.diagonal;
             if (normal) {
                 this.normal = normal;
             }
@@ -316,13 +325,14 @@ var __extends = (this && this.__extends) || (function () {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./heuristics"], factory);
+        define(["require", "exports", "./heuristics", "./errors"], factory);
     }
 })(function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Settings = void 0;
     var heuristics_1 = require("./heuristics");
+    var errors_1 = require("./errors");
     var DefaultType;
     (function (DefaultType) {
         DefaultType[DefaultType["obstacle"] = 1] = "obstacle";
@@ -330,6 +340,9 @@ var __extends = (this && this.__extends) || (function () {
     var Settings = (function () {
         function Settings(settings) {
             var _a;
+            if (!settings.grid) {
+                throw errors_1.ErrorMessage.invalidSettings();
+            }
             this.grid = settings.grid;
             this.diagonal = (_a = settings.diagonal) !== null && _a !== void 0 ? _a : false;
             this.obstacles = new Set(settings.obstacles || [DefaultType.obstacle]);
@@ -344,7 +357,7 @@ var __extends = (this && this.__extends) || (function () {
     exports.Settings = Settings;
 });
 
-},{"./heuristics":3}],6:[function(require,module,exports){
+},{"./errors":2,"./heuristics":3}],6:[function(require,module,exports){
 (function (factory) {
     if (typeof module === "object" && typeof module.exports === "object") {
         var v = factory(require, exports);

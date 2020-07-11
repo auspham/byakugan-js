@@ -2,11 +2,28 @@ import { HeuristicsInterface } from "../interfaces/heuristics.interface"
 import { ErrorMessage } from "./errors";
 import { Node } from "./node";
 
+/**
+ * Default heuristic function are Manhattan for normal (4 directions)
+ * and Octile for diagonal (8 directions) as suggested by:
+ * http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
+ *
+ * @enum {number}
+ */
 enum DefaultFunctions {
     normal = "MANHATTAN",
     diagonal = "OCTILE"
 }
 
+/**
+ * Configure heuristic functions. The default functions are:
+ * - Euclidean
+ * - Manhattan
+ * - Octile
+ * Use overwrites to overwrite any function.
+ *
+ * @export
+ * @class Heuristics
+ */
 export class Heuristics {
     public normal  : (a: Node, b: Node) => number;
     public diagonal: (a: Node, b: Node) => number;
@@ -33,16 +50,16 @@ export class Heuristics {
         this.diagonal = this.functions[DefaultFunctions.diagonal];
 
         if(heuristics) {
-            if(heuristics.overwrite) {
-               this.setOverwrite(heuristics.overwrite);
+            if(heuristics.override) {
+               this.setOverwrite(heuristics.override);
             } else {
                 this.setFunctions(heuristics);
             }
         }
     }
 
-    private setOverwrite(overwrite: HeuristicsInterface["overwrite"]): void {
-        const { normal, diagonal } = overwrite;
+    private setOverwrite(override: HeuristicsInterface["override"]): void {
+        const { normal, diagonal } = override;
 
         if (normal) {
             this.normal = normal;

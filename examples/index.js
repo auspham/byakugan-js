@@ -123,13 +123,18 @@ let sketch = function (p) {
     }
     
     p.draw = function() {
-        // p.background(55, 144, 47);
         let settings = {
             grid: grid,
-            obstacles: [1],
             diagonal: check.diagonal,
             heuristics: {
-                normal: "euclidean"
+                normal: "euclidean",
+                override: {
+                    normal: function(a, b) {
+                        let dx = Math.abs(a.col - b.col);
+                        let dy = Math.abs(a.row - b.row);
+                        return 0.5 * (dx+dy);
+                    }
+                }
             },
             callbacks: {
                 nodeConstructions: function(node) {

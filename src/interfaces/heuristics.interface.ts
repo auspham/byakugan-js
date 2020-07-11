@@ -11,9 +11,9 @@ import { Node } from '../components/node';
  * @interface Heuristics
  */
 export interface HeuristicsInterface {
-    normal?   : string;
-    diagonal? : string;
-    overwrite?: {
+    normal?  : string;
+    diagonal?: string;
+    override?: {
         normal?  : (a: Node, b: Node) => number,
         diagonal?: (a: Node, b: Node) => number
     };

@@ -7,9 +7,9 @@ import { HeuristicsInterface } from './heuristics.interface';
  * @interface SettingsInterface
  */
 export interface SettingsInterface {
-    grid      : Array<Array<number>>;
-    diagonal  : boolean;
-    obstacles : Array<number>;
-    heuristics: HeuristicsInterface;
-    callbacks?: Callbacks;
+    grid       : Array<Array<number>>;
+    diagonal?  : boolean;
+    obstacles? : Array<number>;
+    heuristics?: HeuristicsInterface;
+    callbacks? : Callbacks;
 }
