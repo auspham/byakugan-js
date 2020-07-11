@@ -109,7 +109,7 @@ let settings = {
         normal: 'eucludian', // default Manhattan
         override: {
         	diagonal: function (a,b) {
-				let dx = Math.abs(a.col - b.col);
+                let dx = Math.abs(a.col - b.col);
                 let dy = Math.abs(a.row - b.row);
                 return 0.5 * (dx + dy)
             }
