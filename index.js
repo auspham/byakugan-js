@@ -126,16 +126,6 @@ let sketch = function (p) {
         let settings = {
             grid: grid,
             diagonal: check.diagonal,
-            heuristics: {
-                normal: "euclidean",
-                override: {
-                    normal: function(a, b) {
-                        let dx = Math.abs(a.col - b.col);
-                        let dy = Math.abs(a.row - b.row);
-                        return 0.5 * (dx+dy);
-                    }
-                }
-            },
             callbacks: {
                 nodeConstructions: function(node) {
                     let x = node.col * (bSize);
@@ -180,6 +170,7 @@ let sketch = function (p) {
             p.fill(`rgba(0, 255, 255, .5)`);
             p.rect(col * (bSize), row * (bSizeH), bSize, bSizeH)
         });
+
         if(path.length > 0) {
             let move = path.shift();
             const [row, col] = move;
@@ -195,24 +186,26 @@ let sketch = function (p) {
                 currentPosition.row = row;   
             }
         }
+
         p.strokeWeight(5)
         p.noFill();
+
         if(eclipseSize > 0) {
             eclipseSize-=100;
         }
+
         if(check.animation) {
- 
             p.ellipse(currentPosition.col * (bSize) + eclipseSize/10, currentPosition.row * (bSizeH) - eclipseSize/10, eclipseSize);
         }
-        if(selectedPosition && !selectedPosition.obstacle) {
-          
+
+        if(selectedPosition && !selectedPosition.obstacle) {          
             p.rect(selectedPosition.col * (bSize), selectedPosition.row * (bSizeH), bSize, bSizeH)
         };
+
         if(goalPosition) {
             p.stroke(0,255,0);
             p.rect(goalPosition.col * (bSize), goalPosition.row * (bSizeH), bSize, bSizeH)
         }
-
     }
 
     p.mouseClicked = function () {
@@ -232,6 +225,7 @@ let sketch = function (p) {
             effect.style.display = 'block';
             time = 2700;
         }
+
         setTimeout(function () {
             movePath = [];
             path = byakugan.search(currentPosition.row, currentPosition.col, goalPosition.row, goalPosition.col);
@@ -241,9 +235,7 @@ let sketch = function (p) {
             }
             effect.style.display = 'none';
             document.querySelector(".effect-img").setAttribute("src", "")
-
-        }, time)     
-       
+        }, time)            
     }
 
     p.preload = function () {
@@ -265,7 +257,6 @@ let sketch = function (p) {
 }
 
 new p5(sketch, 'byakugan');
-
 
 let checkbtn = {
     diagonal: document.getElementById("check-diagonal"),
