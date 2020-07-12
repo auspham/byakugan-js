@@ -127,7 +127,7 @@ The above configuration will use `eucludian` distance for `normal` movement and 
 2. Run `cd byakugan/ && npm install`
 3. Run `npm run dev` to develop
 4. Run `npm run build` to build
-5. Run `npm run test` to test
+5. Run `npm run test` or `npm run coverage` to test
 
 ## Contribution
 
