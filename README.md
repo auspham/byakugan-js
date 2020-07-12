@@ -17,12 +17,12 @@ The name [Byakugan](https://naruto.fandom.com/wiki/Byakugan) (白眼) was influe
 Minified build:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/rockmanvnx6/byakugan-js/dist/byakugan.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/rockmanvnx6/byakugan-js@master/dist/byakugan.min.js"></script>
 ```
 
 Development build:
 ```html
-<script src="https://cdn.jsdelivr.net/gh/rockmanvnx6/byakugan-js/dist/byakugan.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/rockmanvnx6/byakugan-js@master/dist/byakugan.js"></script>
 ```
 
 ## Quick start
