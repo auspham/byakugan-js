@@ -1,5 +1,7 @@
 # Byakugan-js
 
+[![NPM](https://nodei.co/npm/byakugan-js.png)](https://nodei.co/npm/byakugan-js/)
+
 ## Description
 
 Byakugan-js is an array-based, super simple and lightweight implementation of [A*](https://en.wikipedia.org/wiki/A*_search_algorithm) pathfinding algorithm written in Typescript. 
