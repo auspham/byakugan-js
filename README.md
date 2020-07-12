@@ -98,7 +98,7 @@ The available heuristic functions are:
 - `Manhattan` (default for `normal` (4 directions) movement)
 - `Octile` (default for `diagonal` (8 directions) movement)
 
-The default settings were used based on [this suggestions](*http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html*). Where for diagonal distance, *Octile* distance was chosen with `D = 1`  and `D2 = sqrt(2)`.
+The default settings were used based on [this suggestions](http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html). Where for diagonal distance, *Octile* distance was chosen with `D = 1`  and `D2 = sqrt(2)`.
 
 
 
