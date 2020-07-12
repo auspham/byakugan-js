@@ -102,7 +102,7 @@ The default settings were used based on [this suggestions](http://theory.stanfor
 
 
 
-To re select/ override a distance function, simply define in the settings object:
+To re-select/override a distance function, simply define in the settings object:
 ```js
 let settings = {
     grid: grid,
