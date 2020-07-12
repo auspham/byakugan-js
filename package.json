@@ -1,7 +1,7 @@
 {
     "name": "byakugan-js",
-    "version": "0.0.2",
-    "description": "Path finding algorithm for sensory type ninjas.",
+    "version": "0.0.4",
+    "description": "A* Path finding algorithm for sensory type ninjas.",
     "main": "build/index.js",
     "types": "build/index.d.ts",
     "scripts": {
@@ -13,7 +13,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/rockmanvnx6/byakugan.git"
+        "url": "git+https://github.com/rockmanvnx6/byakugan-js.git"
     },
     "keywords": [
         "Path",
