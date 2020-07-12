@@ -10,7 +10,7 @@ It's then compiled into JavaScript with ES 5 syntax.
 
 The name [Byakugan](https://naruto.fandom.com/wiki/Byakugan) (白眼) was influenced by the manga series [Naruto](https://en.wikipedia.org/wiki/Naruto).
 
-**Demo**: https://byakugan.js.org/ (please visit using either tablet or pc to see the demo)
+**Demo**: https://byakugan.js.org/ (please visit using either tablet or pc to see the demo).
 
 ## Installation:
 
