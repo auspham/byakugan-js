@@ -45,8 +45,8 @@ let settings = {
         obstacles: [1,3], // Obstacle tiles
         diagonal: true, // Move diagonally, default false
 }
-let b = new Byakugan(settings);
-let paths = b.search(0,1,3,3);
+let byakugan = new Byakugan(settings);
+let paths = byakugan.search(0,1,3,3);
 ```
 
 ## Methods:

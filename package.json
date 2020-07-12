@@ -7,7 +7,8 @@
     "scripts": {
         "dev": "watch 'npm run build' src",
         "build": "tsc && browserify build/index.js -s Byakugan > dist/byakugan.js && uglifyjs dist/byakugan.js -o dist/byakugan.min.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "deploy": "gh-pages -d examples"
     },
     "repository": {
         "type": "git",
@@ -20,11 +21,11 @@
         "Astar",
         "ninja"
     ],
-
     "author": "rockmanvnx6",
     "license": "ISC",
     "devDependencies": {
         "browserify": "^16.5.1",
+        "gh-pages": "^3.1.0",
         "typescript": "^3.9.5",
         "uglify-js": "^3.10.0",
         "watch": "^1.0.2"

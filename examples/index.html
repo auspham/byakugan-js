@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Byakugan-js</title>
+    <title>Byakugan-js | Pathfidning NPM package</title>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -138,8 +138,8 @@ let settings = {
     all: true,
     diagonal: false,
 }
-let b = new Byakugan(settings)
-let paths = b.search(0,1,3,3); // Find path from grid[0][1] to grid[3][3]</code>
+let byakugan = new Byakugan(settings)
+let paths = byakugan.search(0,1,3,3); // Find path from grid[0][1] to grid[3][3]</code>
             </pre>
             <pre>
                 <code class="language-javascript">console.log(paths) // [ [1,1], [2,1], [2,2], [3,2], [3,3] ]</code>
@@ -149,17 +149,19 @@ let paths = b.search(0,1,3,3); // Find path from grid[0][1] to grid[3][3]</code>
     </section>
     <section class="section">
         <div class="container">
-            <h1 class="title">APIs</h1>
+            <h1 class="title">Contributions & APIs</h1>
             <div class="content">
-                <p> For a full implementation and API usage, visit <a href="https://github.com/rockmanvnx6/byakugan" target="_blank">Github.</a> </p>
+                <p> For a full contributions guide and API usage, please visit <a href="https://github.com/rockmanvnx6/byakugan" target="_blank">Github.</a> </p>
             </div>
         </div>
     </section>
     <footer class="footer">
         <div class="content has-text-centered is-small">
           <p>
-            <strong>Byakugan-js</strong> by <a href="https://auspham.dev/" target="_blank">Thang Pham (Austin)</a>. The source code is licensed
-            <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. Sprites and images in the demo are from <a href="https://github.com/mozilla/BrowserQuest" target="_blank">BrowserQuest</a>.
+            By <a href="https://auspham.dev/" target="_blank">Thang Pham (Austin)</a> &#169; 2020.
+          </p>
+          <p>
+            Sprites and images in the demo are from <a href="https://github.com/mozilla/BrowserQuest" target="_blank">BrowserQuest</a>.
           </p>
         </div>
     </footer>
