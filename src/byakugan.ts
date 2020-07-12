@@ -10,7 +10,7 @@ import { Node } from "./components/node";
 import { SettingsInterface } from "./interfaces/settings.interface";
 
 export default class Byakugan {
-    private settings: Settings;
+    public settings: Settings;
     private grid: Array<Array<Node>>;
 
     constructor(settings: SettingsInterface) {
@@ -19,7 +19,7 @@ export default class Byakugan {
             this.grid = [];
             this.constructNode(settings.grid);
         } catch (error) {
-            console.error(error);
+            throw error;
         }
     }
 
@@ -81,7 +81,7 @@ export default class Byakugan {
             }
             return heuristics.normal(a, b);
         } catch (error) {
-            console.error(error);
+            throw error;
         }
     }
 
@@ -137,23 +137,23 @@ export default class Byakugan {
      * Implementation of A* algorithm. Following the pseudo code
      * from https://en.wikipedia.org/wiki/A*_search_algorithm
      *
-     * @param {number} x1
-     * @param {number} y1
-     * @param {number} x2
-     * @param {number} y2
+     * @param {number} row1
+     * @param {number} col1
+     * @param {number} row2
+     * @param {number} col2
      * @returns {Array<Array<number>>}
      * @memberof Byakugan
      */
     public search(
-        x1: number,
-        y1: number,
-        x2: number,
-        y2: number
+        row1: number,
+        col1: number,
+        row2: number,
+        col2: number
     ): Array<Array<number>> {
         this.resetGrid();
 
-        let start: Node = this.grid[x1][y1];
-        let end: Node = this.grid[x2][y2];
+        let start: Node = this.grid[row1][col1];
+        let end: Node = this.grid[row2][col2];
         let openSet: Array<Node> = [start];
         let closeSet: Array<Node> = [];
 

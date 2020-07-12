@@ -50,10 +50,9 @@ export class Heuristics {
         this.diagonal = this.functions[DefaultFunctions.diagonal];
 
         if(heuristics) {
+            this.setFunctions(heuristics);
             if(heuristics.override) {
                this.setOverwrite(heuristics.override);
-            } else {
-                this.setFunctions(heuristics);
             }
         }
     }

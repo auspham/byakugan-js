@@ -1,13 +1,14 @@
 {
     "name": "byakugan-js",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Path finding algorithm for sensory type ninjas.",
     "main": "build/index.js",
     "types": "build/index.d.ts",
     "scripts": {
         "dev": "watch 'npm run build' src",
         "build": "tsc && browserify build/index.js -s Byakugan > dist/byakugan.js && uglifyjs dist/byakugan.js -o dist/byakugan.min.js",
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "jest",
+        "coverage": "jest --coverage",
         "deploy": "gh-pages -d examples"
     },
     "repository": {
@@ -24,9 +25,12 @@
     "author": "rockmanvnx6",
     "license": "ISC",
     "devDependencies": {
+        "@types/jest": "^26.0.4",
         "browserify": "^16.5.1",
         "gh-pages": "^3.1.0",
-        "typescript": "^3.9.5",
+        "jest": "^26.1.0",
+        "ts-jest": "^26.1.1",
+        "typescript": "^3.9.6",
         "uglify-js": "^3.10.0",
         "watch": "^1.0.2"
     },

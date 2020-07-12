@@ -5,10 +5,12 @@
         "declaration": true,
         "lib": ["es2015.core", "es5", "es2017", "dom"],
         "removeComments": true,
-        "module": "umd"
+        "module": "umd",
+        "skipLibCheck": true,
+        "esModuleInterop": true
         // "outFile": "./build/index.js",
     },
     "include": ["src"],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules", "tests", "dist"],
 }
     

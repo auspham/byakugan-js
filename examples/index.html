@@ -125,7 +125,7 @@
             <p class="subtitle"><b>Usage</b></p>
             <pre>
                 <code class="language-javascript">const Byakugan = require('byakugan-js'); // ignore if using CDN
-let settings = {
+const settings = {
     grid: [
         [1, 2, 0, 0],
         [1, 0, 0, 0],
@@ -138,8 +138,8 @@ let settings = {
     all: true,
     diagonal: false,
 }
-let byakugan = new Byakugan(settings)
-let paths = byakugan.search(0,1,3,3); // Find path from grid[0][1] to grid[3][3]</code>
+const byakugan = new Byakugan(settings)
+const paths = byakugan.search(0,1,3,3); // Find path from grid[0][1] to grid[3][3]</code>
             </pre>
             <pre>
                 <code class="language-javascript">console.log(paths) // [ [1,1], [2,1], [2,2], [3,2], [3,3] ]</code>

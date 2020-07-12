@@ -127,7 +127,6 @@ let sketch = function (p) {
             grid: grid,
             diagonal: check.diagonal,
             heuristics: {
-                normal: "euclidean",
                 override: {
                     normal: function(a, b) {
                         let dx = Math.abs(a.col - b.col);

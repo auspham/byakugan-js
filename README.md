@@ -32,7 +32,7 @@ Make sure `Byakugan-js` is installed via `npm` or included using `CDN`.
 ```js
 const Byakugan = require('byakugan-js'); // ignore if using CDN
 
-let settings = {
+const settings = {
         grid: [
             [1, 3, 0, 0],
             [1, 0, 0, 0],
@@ -45,13 +45,13 @@ let settings = {
         obstacles: [1,3], // Obstacle tiles
         diagonal: true, // Move diagonally, default false
 }
-let byakugan = new Byakugan(settings);
-let paths = byakugan.search(0,1,3,3);
+const byakugan = new Byakugan(settings);
+const paths = byakugan.search(0,1,3,3);
 ```
 
 ## Methods:
 
-**search(x1, y1, x2, y2)**
+**search(row1, col1, row2, col2)**
 
 > Return a 2D array which contains the coordinates of path.
 

@@ -20,7 +20,7 @@
                 this.constructNode(settings.grid);
             }
             catch (error) {
-                console.error(error);
+                throw error;
             }
         }
         Byakugan.prototype.isObstacle = function (val, obstacles) {
@@ -51,7 +51,7 @@
                 return heuristics.normal(a, b);
             }
             catch (error) {
-                console.error(error);
+                throw error;
             }
         };
         Byakugan.prototype.resetGrid = function () {
@@ -75,10 +75,10 @@
             }
             return result;
         };
-        Byakugan.prototype.search = function (x1, y1, x2, y2) {
+        Byakugan.prototype.search = function (row1, col1, row2, col2) {
             this.resetGrid();
-            var start = this.grid[x1][y1];
-            var end = this.grid[x2][y2];
+            var start = this.grid[row1][col1];
+            var end = this.grid[row2][col2];
             var openSet = [start];
             var closeSet = [];
             while (openSet.length > 0) {
@@ -198,11 +198,9 @@ var __extends = (this && this.__extends) || (function () {
             this.normal = this.functions[DefaultFunctions.normal];
             this.diagonal = this.functions[DefaultFunctions.diagonal];
             if (heuristics) {
+                this.setFunctions(heuristics);
                 if (heuristics.override) {
                     this.setOverwrite(heuristics.override);
-                }
-                else {
-                    this.setFunctions(heuristics);
                 }
             }
         }
@@ -358,6 +356,9 @@ var __extends = (this && this.__extends) || (function () {
 });
 
 },{"./errors":2,"./heuristics":3}],6:[function(require,module,exports){
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 (function (factory) {
     if (typeof module === "object" && typeof module.exports === "object") {
         var v = factory(require, exports);
@@ -368,7 +369,7 @@ var __extends = (this && this.__extends) || (function () {
     }
 })(function (require, exports) {
     "use strict";
-    var byakugan_1 = require("./byakugan");
+    var byakugan_1 = __importDefault(require("./byakugan"));
     return byakugan_1.default;
 });
 
