@@ -44,7 +44,6 @@ const settings = {
             [0, 1, 0, 0],
             [0, 1, 1, 1],
             [0, 0, 0, 1],
-          
         ],
         obstacles: [1,3], // Obstacle tiles
         diagonal: true, // Move diagonally, default false

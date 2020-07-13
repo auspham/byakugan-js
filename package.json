@@ -1,6 +1,6 @@
 {
     "name": "byakugan-js",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "A simple implementation of A* Pathfinding algorithm for sensory type ninjas.",
     "main": "build/index.js",
     "types": "build/index.d.ts",
