@@ -7,11 +7,12 @@ let currentPosition = {
 }
 
 let selectedPosition = null;
+let goalPosition = null;
+
 let byakugan;
 let path = [];
 let movePath = [];
 let eclipseSize = 500;
-let goalPosition = null;
 
 let check = {
     diagonal: true,
@@ -219,23 +220,25 @@ let sketch = function (p) {
     }
 
     let start = function () {
-        let time = 0;
-        if(check.animation) {
-            document.querySelector(".effect-img").setAttribute("src", "./assets/byakugan.webp")
-            effect.style.display = 'block';
-            time = 2700;
-        }
-
-        setTimeout(function () {
-            movePath = [];
-            path = byakugan.search(currentPosition.row, currentPosition.col, goalPosition.row, goalPosition.col);
-            eclipseSize = 500;
+        if(goalPosition) {
+            let time = 0;
             if(check.animation) {
-                dom.classList.add('active');
+                document.querySelector(".effect-img").setAttribute("src", "./assets/byakugan.webp")
+                effect.style.display = 'block';
+                time = 2700;
             }
-            effect.style.display = 'none';
-            document.querySelector(".effect-img").setAttribute("src", "")
-        }, time)            
+    
+            setTimeout(function () {
+                movePath = [];
+                path = byakugan.search(currentPosition.row, currentPosition.col, goalPosition.row, goalPosition.col);
+                eclipseSize = 500;
+                if(check.animation) {
+                    dom.classList.add('active');
+                }
+                effect.style.display = 'none';
+                document.querySelector(".effect-img").setAttribute("src", "")
+            }, time);
+        }
     }
 
     p.preload = function () {
