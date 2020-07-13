@@ -223,7 +223,7 @@ let sketch = function (p) {
         if(goalPosition) {
             let time = 0;
             if(check.animation) {
-                document.querySelector(".effect-img").setAttribute("src", "./assets/byakugan.webp")
+                document.querySelector(".effect-img").setAttribute("src", "./assets/byakugan.gif")
                 effect.style.display = 'block';
                 time = 2700;
             }
