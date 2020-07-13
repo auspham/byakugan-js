@@ -1,7 +1,7 @@
 {
     "name": "byakugan-js",
     "version": "0.0.4",
-    "description": "A* Path finding algorithm for sensory type ninjas.",
+    "description": "A simple implementation of A* Pathfinding algorithm for sensory type ninjas.",
     "main": "build/index.js",
     "types": "build/index.d.ts",
     "scripts": {
@@ -16,14 +16,23 @@
         "url": "git+https://github.com/rockmanvnx6/byakugan-js.git"
     },
     "keywords": [
-        "Path",
+        "path",
         "finding",
-        "Array",
-        "Astar",
+        "array",
+        "astar",
+        "pathfinding",
+        "naruto",
+        "typescript",
+        "javascript",
+        "es5",
         "ninja"
     ],
-    "author": "rockmanvnx6",
-    "license": "ISC",
+    "author": "Ngoc Thang Pham (Austin) | @rockmanvnx6",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/rockmanvnx6/byakugan-js/issues"
+    },
+    "homepage": "https://byakugan.js.org/",
     "devDependencies": {
         "@types/jest": "^26.0.4",
         "browserify": "^16.5.1",
