@@ -38,12 +38,12 @@ const Byakugan = require('byakugan-js'); // ignore if using CDN
 
 const settings = {
         grid: [
-            [1, 3, 0, 0],
+            [1, 0, 0, 0],
             [1, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 1, 0, 0],
             [0, 1, 1, 1],
-            [3, 0, 0, 1],
+            [0, 0, 0, 1],
           
         ],
         obstacles: [1,3], // Obstacle tiles
@@ -62,7 +62,8 @@ const paths = byakugan.search(0,1,3,3);
 *Example:*
 
 ```js
-Byakugan.search(0,1,3,3); // Find path from grid[0][1] to grid[3][3]
+let byakugan = new Byakugan(settings)
+byakugan.search(0,1,3,3); // Find path from grid[0][1] to grid[3][3]
 ```
 
 Return:
@@ -136,6 +137,3 @@ The above configuration will use `eucludian` distance for `normal` movement and 
 ## Contribution
 
 Contributions are very welcome. Simply fork this project and make [pull requests](https://github.com/rockmanvnx6/byakugan/pulls).
-
-
-
