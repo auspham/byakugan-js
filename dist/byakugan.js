@@ -96,7 +96,7 @@
                 closeSet.push(remove);
                 for (var i = 0; i < current.neighbours.length; i++) {
                     var neighbour = current.neighbours[i];
-                    if (neighbour.isObstacle() || !closeSet.includes(neighbour)) {
+                    if (!neighbour.isObstacle() && !closeSet.includes(neighbour)) {
                         var tempG = current.g + this.distance(current, neighbour);
                         if (!openSet.includes(neighbour) || tempG < neighbour.g) {
                             neighbour.updateScore(tempG, this.distance(neighbour, end));

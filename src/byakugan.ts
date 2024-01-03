@@ -177,7 +177,7 @@ export default class Byakugan {
             for (let i = 0; i < current.neighbours.length; i++) {
                 let neighbour: Node = current.neighbours[i];
 
-                if (neighbour.isObstacle() || !closeSet.includes(neighbour)) {
+                if (!neighbour.isObstacle() && !closeSet.includes(neighbour)) {
 
                     let tempG: number =
                         current.g + this.distance(current, neighbour);                    
