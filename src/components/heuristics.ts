@@ -30,7 +30,7 @@ export class Heuristics {
 
     private functions: Object = {
         EUCLIDEAN: (a: Node, b: Node) => {
-            Math.hypot(a.row - b.row, a.col - b.col);
+            return Math.hypot(a.row - b.row, a.col - b.col);
         },
         MANHATTAN: (a: Node, b: Node) => {
             let dx = Math.abs(a.col - b.col);
